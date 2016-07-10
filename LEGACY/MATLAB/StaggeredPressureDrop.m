@@ -50,27 +50,18 @@ c_4 = [-.599E13, -.482E13, .872E16];     %b = 1.25, 1.5, and 2
 end 
 % Assigning correct values to each tube spacing
 if (b == 1.25)
-    
     i = 1;
-    
     else if (b == 1.5)
-        
         i = 2;
-        
         else if (b == 2)
-            
             i = 3;
-            
-            end 
-        
-          end 
-    
+        end
+    end
 end 
 
 %%%%%%%%% Correction Factors %%%%%%%%%% 
 
 %k_1 is the influence of pitch ratio
-
         %Will add later if data can be found
 
 %k_2 =  Influence of Temperature on Fluid properties. Neglected 
@@ -96,12 +87,10 @@ end
 %Power series for Euler number per row. From same website as above.
 Eu_p = (c_0(i)./Re.^0)+(c_1(i)./Re.^1)+(c_2(i)./Re.^2)+(c_3(i)./Re.^3)+(c_4(i)./Re.^4);
 
-
-    
+%%%Corrected Euler Number    
 Eu = Eu_p.*k_3; %.*k_1;
+
 %Using the relation Eu = dP/((1/2)*rho*v^2)
 dP = Eu.*((rho.*v_mean.^2)./2); %Pressure drop per row 
 dP_total = dP.*N/1000; %pressure drop across 10 rows expressed in kPa
-
-
 end
