@@ -50,87 +50,55 @@ end
 % Non-rectangular bundle % (valid up to Reynolds numbers of 150000)
 
 k_1 = 1;
-
 if x ~= 1.00
-    
     if (Re >= 1000 && Re < 10000)
-    
-        k_1 = .9849.*x.^(-.8129);
-    
-        else if (Re >= 10000 && Re < 70000)  
-    
+            k_1 = .9849.*x.^(-.8129);
+    else if (Re >= 10000 && Re < 70000)  
             k_1 = .9802.*x.^(-.7492);
-    
-            else if (Re >= 70000 && Re < 150000)
-                    
-                k_1 = .988.*x.^(-.6388);
-             
-                end 
-                
-              end
-            
+    else if (Re >= 70000 && Re < 150000)
+            k_1 = .988.*x.^(-.6388);
+            end 
+         end
     end
-    
 end 
 
-% Entry losses % 
-
+%%% Entry losses %%%
 %Entry loss coefficients (Re > 1E4 but < 1E6) 
 el_1 = [1.9, 1.1, 1, 1, 1, 1, 1];
-
 %Entry loss coefficients (Re > 1E6) 
 el_2 = [2.7, 1.8, 1.5, 1.4, 1.3, 1.2, 1.2];
- 
-
 if (b == 1.25)
-    
     i = 1;
-    
     else if (b == 1.5)
-        
         i = 2;
-        
         else if (b == 2)
-            
             i = 3;
-            
-            end 
-        
-          end 
-    
+        end
+     end
 end 
 
 
 k_3 = 1;
 
 if (N < 7 && N > 0 && Re < 1E6 && Re > 1E2)
-       
     k_3 = el_1(N);
-    
     else if (N < 7 && N > 0 && Re >= 1E6)
-    
         k_3 = el_2(N);
-       
         else if (Re <= 1E2)
-                %disp('Reynolds number needs to be greater than 100')
+                disp('Reynolds number needs to be greater than 100')
                 %break 
-            end 
-            
         end 
-                
-    
+    end 
 end
 
 %Power series for Euler number per row. From same website as above.
 Eu_p = (c_0(i)./Re.^0)+(c_1(i)./Re.^1)+(c_2(i)./Re.^2)+(c_3(i)./Re.^3)+(c_4(i)./Re.^4);
 
-
-    
+%%%Corrected Euler Number%%%
 Eu = Eu_p.*k_3.*k_1;
+
 %Using the relation Eu = dP/((1/2)*rho*v^2)
 dP = Eu.*((rho.*v_mean.^2)./2); %Pressure drop per row 
 dP_total = dP.*N/1000; %pressure drop across 10 rows expressed in kPa
-
-
 end
 
