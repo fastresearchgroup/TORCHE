@@ -15,19 +15,10 @@
 %Reynolds number needs to be below 150000
 
 function [dP_total, Re, v_mean,Eu] = InlinePressureDrop(a,b,v,rho,u,N,D_tube, Re)
-%a = 1.25;                 %a = S1/D, where S1 is the transverse (x) pitch and D is the tube diameter 
-%b = 1.25;                 %b = S2/D, where S2 is the longitudinal (y) pitch and D is the tube diameter   
 x = double((a-1)./(b-1));
 rho = rho*1000;               %g/cm^3 ---> kg/m^3(density)
-%u = .0056;                %pa*s (dynamic viscosity) 
-%Re = 7691;               %MinXS Reynolds number (if already known)
-%D = 1;                   %Hydraulic diamter of flow channel in m (if free flow velocity isn't known)
-%v =  .5;                  %(m/s) mean free flow velocity of bulk fluid       %(Re.*u)./(rho.*D);  
-%N = 10;                   %The number of rows in the bundle
 v_mean = v.*(a./(a-1));   %mean flow velocity in min XSection of tube bank (Zukauska's book assumes avg flow velocity is approx. max velocity)
-%D_tube = .0254;           %Cylinder diameter (m)
 %Re = double((rho.*D_tube.*v_mean)./u);  %MinXS Reynolds number (if not already known)
-
 
 %coefficients for Euler number (calculated using the power series)
 %coefficients come from here: http://www.thermopedia.com/content/1211/#TUBE_BANKS_CROSSFLOW_OVER_FIG2
@@ -138,7 +129,7 @@ Eu_p = (c_0(i)./Re.^0)+(c_1(i)./Re.^1)+(c_2(i)./Re.^2)+(c_3(i)./Re.^3)+(c_4(i)./
 Eu = Eu_p.*k_3.*k_1;
 %Using the relation Eu = dP/((1/2)*rho*v^2)
 dP = Eu.*((rho.*v_mean.^2)./2); %Pressure drop per row 
-dP_total = dP.*N; %pressure drop across 10 rows
+dP_total = dP.*N/1000; %pressure drop across 10 rows expressed in kPa
 
 
 end
