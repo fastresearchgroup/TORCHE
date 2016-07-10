@@ -50,58 +50,37 @@ def integer(a,b,v,rho,u,N,Dtube, Re):
     k_1 = 1;
     
     if x != 1.00:
-        
         if (Re >= 1000 and Re < 10000):
-        
             k_1 = .9849*x**(-.8129);
-        
         elif (Re >= 10000 and Re < 70000):  
-        
                 k_1 = .9802*x**(-.7492);
-        
         elif (Re >= 70000 and Re < 150000):
-                        
                     k_1 = .988*x**(-.6388);
-                    
      # Entry Losses #
-                    
     # Entry loss coefficients (Re > 1E4 but < 1E6) 
     el_1 = numpy.array([1.9, 1.1, 1, 1, 1, 1, 1]);
-    
     #Entry loss coefficients (Re > 1E6)
     el_2 = numpy.array([2.7, 1.8, 1.5, 1.4, 1.3, 1.2, 1.2]);
      
-    
     if (b == 1.25):
-        
         i = 0;
-        
     elif (b == 1.5):
-            
             i = 1;
-            
     elif (b == 2):
-                
             i = 2;
-                
     k_3 = 1;
     
     if (N < 7 and N > 0 and Re < 1E6 and Re > 1E2):
-           
         k_3 = el_1[N-1];
         
     elif (N < 9 and N > 0 and Re > 1E6):
-        
         k_3 = el_2[N-1];
            
     elif (Re <= 1E2):
         print('Reynolds number needs to be greater than 100')
 
-             
-   
   #Power series for Euler number per row. From same website as above.
     Eu_p = (c_0[i]/Re**0)+(c_1[i]/Re**1)+(c_2[i]/Re**2)+(c_3[i]/Re**3)+(c_4[i]/Re**4);
-    
     Eu = Eu_p*k_3*k_1;
                     
     #Using the relation Eu = dP/((1/2)*rho*v^2)
@@ -146,17 +125,11 @@ def array(a,b,v,rho,u,N,Dtube, Re_A):
         k_1 = 1;
         
         if x != 1.00:
-            
             if (Re >= 1000 and Re < 10000):
-            
                 k_1 = .9849*x**(-.8129);
-            
             elif (Re >= 10000 and Re < 70000):  
-            
                     k_1 = .9802*x**(-.7492);
-            
             elif (Re >= 70000 and Re < 150000):
-                            
                         k_1 = .988*x**(-.6388);
                         
          # Entry Losses #
@@ -166,28 +139,21 @@ def array(a,b,v,rho,u,N,Dtube, Re_A):
         
         #Entry loss coefficients (Re > 1E6)
         el_2 = numpy.array([2.7, 1.8, 1.5, 1.4, 1.3, 1.2, 1.2]);
-         
-        
         if (b == 1.25):
-            
             i = 0;
             
         elif (b == 1.5):
-                
                 i = 1;
                 
         elif (b == 2):
-                    
                 i = 2;
                     
         k_3 = 1;
         
         if (N < 7 and N > 0 and Re < 1E6 and Re > 1E2):
-               
             k_3 = el_1[N-1];
             
         elif (N < 9 and N > 0 and Re > 1E6):
-            
             k_3 = el_2[N-1];
                
         elif (Re <= 1E2):
@@ -195,7 +161,6 @@ def array(a,b,v,rho,u,N,Dtube, Re_A):
        
       #Power series for Euler number per row. From same website as above.
         Eu_p = (c_0[i]/Re**0)+(c_1[i]/Re**1)+(c_2[i]/Re**2)+(c_3[i]/Re**3)+(c_4[i]/Re**4);
-        
         Eu = Eu_p*k_3*k_1;
                         
         #Using the relation Eu = dP/((1/2)*rho*v^2)
@@ -203,8 +168,6 @@ def array(a,b,v,rho,u,N,Dtube, Re_A):
         dP_total = dP*N/1000; #pressure drop across N rows
         dPList[t]= dP_total
     return dPList
-    
-
 
 def inline(a,b,v,rho,u,N,Dtube, Re):
     if type(Re) == list:
@@ -215,7 +178,3 @@ def inline(a,b,v,rho,u,N,Dtube, Re):
         PD=testtype.array(a,b,v,rho,u,N,Dtube, Re)
     return PD 
         
-
-    
-
-
