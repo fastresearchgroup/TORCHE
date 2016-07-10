@@ -101,7 +101,7 @@ Eu_p = (c_0(i)./Re.^0)+(c_1(i)./Re.^1)+(c_2(i)./Re.^2)+(c_3(i)./Re.^3)+(c_4(i)./
 Eu = Eu_p.*k_3; %.*k_1;
 %Using the relation Eu = dP/((1/2)*rho*v^2)
 dP = Eu.*((rho.*v_mean.^2)./2); %Pressure drop per row 
-dP_total = dP.*N; %pressure drop across 10 rows
+dP_total = dP.*N/1000; %pressure drop across 10 rows expressed in kPa
 
 
 end
