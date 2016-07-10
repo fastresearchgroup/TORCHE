@@ -168,13 +168,13 @@ def array(a,b,v,rho,u,N,Dtube, Re_A):
         dP_total = dP*N/1000; #pressure drop across N rows
         dPList[t]= dP_total
     return dPList
-
+import PressureDrop ##Needed to import the file itself so I could call the functions above. May be a different way.
 def inline(a,b,v,rho,u,N,Dtube, Re):
     if type(Re) == list:
         Re = numpy.array(Re,dtype=float)
     if type(Re) == int:
-        PD= testtype.integer(a,b,v,rho,u,N,Dtube, Re)
+        PD= PressureDrop.integer(a,b,v,rho,u,N,Dtube, Re)
     elif type(Re) == numpy.ndarray:
-        PD=testtype.array(a,b,v,rho,u,N,Dtube, Re)
+        PD=PressureDrop.array(a,b,v,rho,u,N,Dtube, Re)
     return PD 
         
