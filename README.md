@@ -20,7 +20,7 @@ Limitations:
 - Will work for values of b = 1.25, 1.5, or 2
 - Reynolds number needs to be below 150000
 
-This work can be discussed in detail in the following work:
+This work is discussed in detail in the following work:
 
 1. J. B. Haefner, L. B. Carasik, Y. A. Hassan, Development and Verification of MATLAB Functions for Pressure Drop Estimation in Crossflow Tube Bundles. In Transactions of the American Nuclear Society (Vol. 115(1), pp. 1535-1537). Las Vegas, Nevada
 
