@@ -1,0 +1,69 @@
+# -*- coding: utf-8 -*-
+"""
+Last Edit: 1 DEC 2016
+@author: Jonah Haefner
+
+Title: Gaddis-Gnielinski Pressure Drop Model
+
+Source:
+Gaddis, E.S. and Gnielinski, V.,. Pressure drop in cross
+flow across tube bundles, Int. Chem. Eng. Vol. 25, No.1,
+pp. 1-15, 1985.
+
+"""
+import sys
+import numpy
+def PressureDrop(a,b,u,rho,Re,N,geom):
+   '''    # Rho [kg/m^3]
+        # u = free stream velocity without tubes [m/s]
+        # a = transverse pitch ratio
+        # b = longitudinal pitch ratio
+        # a and b [m]
+        # Reynolds number calculated based on velcoity at narrowest point
+        # N = # of tubes
+        #D_lam = Drag coefficient due to laminar flow
+        #D_turb = Drag coefficient due to turbulent flow
+        #f_nt = Coefficient for influence of inlet and outlet pressure losses
+        # f_ti, f_ts = geometric arragement factor  
+   
+   
+        #Calculating the velcoity through the narrowest area
+        #PRessure Drop in kPa
+        #Ranges of validity have yet to be included in this script. Information soon to come.
+   '''
+   if geom == 'inline':
+        u0 = u*(a/(a-1))
+        D_lam= 280*numpy.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-numpy.pi)*Re);
+        if (N > 5 and N <= 10):
+            f_nt= (1/a**2)*(1/N-.1);
+        elif N > 10:
+            f_nt = 0
+        elif N <=5:
+            sys.exit('Model only valid for greater than 5 tubes')
+        f_ti = (0.22+1.2*(1-(0.94/b))**(0.6)/(a-0.85)**1.3)*10**(0.47*(b/a-1.5))+0.03*(a-1)*(b-1);
+        D_turb = f_ti/(Re**(.1*b/a));
+        D_tot = D_lam++(D_turb+f_nt)*(1-numpy.exp(1-(Re+1000)/2000));
+   if geom == "staggered":
+        if  b < .5*(2*a+1)**(.5):
+            c=((a/2)**2+b**2)**(1/2);
+            u0 = u*a/(2*(c-1));
+            D_lam= 280*numpy.pi*((b**.5-0.6)**2+0.75)/((c**1.6)*(4*a*b-numpy.pi)*Re);
+            if (N > 5 and N <= 10):
+                f_nt = (2*(c-1)/a*(a-1)**2)*(1/N-.1);
+            elif N > 10:
+                f_nt = 0;
+        else:
+            u0 = u*(a/(a-1))
+            D_lam= 280*numpy.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-numpy.pi)*Re);
+            if (N > 5 and N <= 10):
+                f_nt= (1/a**2)*(1/N-.1);
+            elif N > 10:
+                f_nt = 0
+        f_ts = 2.5+1.2/(a-0.85)**1.08+0.4*(b/a-1)**3-0.01*(a/b-1)**3;
+        D_turb = f_ts/Re**0.25;
+        D_tot = D_lam+(D_turb+f_nt)*(1-numpy.exp(1-(Re+200)/1000));
+   PressDrop = .5*D_tot*(N*rho*u0**2)/1000; # in kPa
+   return PressDrop
+        
+
+
