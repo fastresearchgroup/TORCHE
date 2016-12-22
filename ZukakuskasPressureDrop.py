@@ -125,13 +125,13 @@ def Zukauskas(a,b,v,rho,u,N,Dtube, Re,geom):
                 c_4 = [-.599E13, -.482E13, .872E16];  #b = 1.25, 1.5, and 2
             
             if (b == 1.25):                
-                i = 1;
+                i = 0;
                 
             elif (b == 1.5):
-                i = 2;
+                i = 1;
                     
             elif (b == 2):
-                i = 3;
+                i = 2;
             
             #Entry loss coefficients (Re < 1E2 but < 1E4)
             el_1 = [1.4, 1.3, 1.2, 1.1, 1, 1, 1];
