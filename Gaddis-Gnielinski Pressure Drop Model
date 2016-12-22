@@ -42,7 +42,7 @@ def PressureDrop(a,b,u,rho,Re,N,geom):
             sys.exit('Model only valid for greater than 5 tubes')
         f_ti = (0.22+1.2*(1-(0.94/b))**(0.6)/(a-0.85)**1.3)*10**(0.47*(b/a-1.5))+0.03*(a-1)*(b-1);
         D_turb = f_ti/(Re**(.1*b/a));
-        D_tot = D_lam++(D_turb+f_nt)*(1-numpy.exp(1-(Re+1000)/2000));
+        D_tot = D_lam++(D_turb+f_nt)*(1-numpy.exp(-(Re+1000)/2000));
    if geom == "staggered":
         if  b < .5*(2*a+1)**(.5):
             c=((a/2)**2+b**2)**(1/2);
@@ -61,7 +61,7 @@ def PressureDrop(a,b,u,rho,Re,N,geom):
                 f_nt = 0
         f_ts = 2.5+1.2/(a-0.85)**1.08+0.4*(b/a-1)**3-0.01*(a/b-1)**3;
         D_turb = f_ts/Re**0.25;
-        D_tot = D_lam+(D_turb+f_nt)*(1-numpy.exp(1-(Re+200)/1000));
+        D_tot = D_lam+(D_turb+f_nt)*(1-numpy.exp(-(Re+200)/1000));
    PressDrop = .5*D_tot*(N*rho*u0**2)/1000; # in kPa
    return PressDrop
         
