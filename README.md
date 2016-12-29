@@ -55,6 +55,6 @@ Validity:
 * The tube bundles used in the experimental investigations had transverse and longitudinal pitch ratios as follows: 
  * In the range Re < 10E3: For in-line tube arrangement: a x b = 1:25 x 1:25; 1:5 x 1:5; 2:0 x 2:0. For staggered tube arrangement: a x b = 1:25 x 1:0825; 1:5 x 1:299; 1:768 x 0:884.
  * In the range Re ≥ 10E3: For in-line tube arrangement: 1:25 ≤ a ≤ 3:0; 1:2 ≤  b ≤  3:0. For staggered tube arrangement: 1:25 ≤  a ≤  3:0; 0:6 ≤  b ≤  3:0; c ≥ 1:25.
-
+ Citation: VDI. VDI Heat Atlas. Berlin, Heidelberg: VDI-Buch-Springer, 2010. Chapter L1
 Output:
 - Pressure Drop in kPa
