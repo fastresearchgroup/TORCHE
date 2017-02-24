@@ -13,7 +13,7 @@ pp. 1-15, 1985.
 """
 import sys
 import numpy
-def PressureDrop(a,b,u,rho,Re,N,geom):
+def dP_Gnielinski(a,b,u,rho,Re,N,geom):
    '''    # Rho [kg/m^3]
         # u = free stream velocity without tubes [m/s]
         # a = transverse pitch ratio
@@ -29,7 +29,7 @@ def PressureDrop(a,b,u,rho,Re,N,geom):
    
         #Calculating the velcoity through the narrowest area
         #PRessure Drop in kPa
-        #Ranges of validity have yet to be included in this script. Information soon to come.
+        #Ranges of validity have yet to be included in this script.
    '''
    if geom == 'inline':
         u0 = u*(a/(a-1))
