@@ -1,12 +1,14 @@
-# PressureDrop
-This is a collection of Python scripts for pressure drop calculations for crossflow tube bundles for both inline and staggered configurations
+# TORCHE
+This is a collection of Python scripts for pressure drop  and heat transfer calculations for crossflow tube bundles for both inline and staggered configurations
 
 Author: Jonah Haefner
 Contributing and previous work done by: Julien Clayton and Lane Carasik
 
-These models are simple to use pressure drop calculators based off the work of Zukauskas et al. and Gnielinski and Gaddis.
+These models are simple to use pressure drop and Nusselt Number calculators based off the work of Zukauskas et al. and Gnielinski and Gaddis.
 
-###Zukauskas Model
+## Pressure Drop
+
+### Zukauskas Model
 
 Inputs:
 - a = dimensionless transverse pitch
@@ -27,6 +29,8 @@ Limitations:
 This work is discussed in detail in the following work:
 
 1. J. B. Haefner, L. B. Carasik, Y. A. Hassan, Development and Verification of MATLAB Functions for Pressure Drop Estimation in Crossflow Tube Bundles. In Transactions of the American Nuclear Society (Vol. 115(1), pp. 1535-1537). Las Vegas, Nevada
+
+Additional conference papers are currently under review.
 
 References:
 1. A. ZUKAUSKAS, R. ULINSKAS, Heat Transfer in Banks of Tubes in Crossflow, Hemisphere Publishing, United States (1988).
@@ -58,3 +62,50 @@ Validity:
  Citation: VDI. VDI Heat Atlas. Berlin, Heidelberg: VDI-Buch-Springer, 2010. Chapter L1
 Output:
 - Pressure Drop in kPa
+
+## Heat Transfer
+
+### Zukauskas Model
+Zukauskas Model
+        Cite: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
+        Hemisphere Publishing Corporation. New York, NY. 1988.
+        
+        Inputs:
+            -Rho = density [kg/m^3]
+            -u = free stream velocity without tubes [m/s]
+            -a = transverse pitch ratio
+            -b = longitudinal pitch ratio
+            -a and b [m]
+            -Reynolds number calculated based on velcoity at narrowest point
+            - N = # of tubes
+            - Pr = Prandtl Number
+            - d = Tube Diameter
+            - PrS = Wall Prandtl Number
+            - v = kinematic viscosity (m^2/s)
+            
+            NOTE: Currently only applicable for staggered geometry
+            Validity:10 < Re < 2e6
+                     0.7 < Pr < 500
+        Output:
+              - Nusselt Number
+### Gnielinski-Gaddis Model
+
+Gnielinski and Martin Model
+Based off Leveque Analogy
+    Cite: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,” Chem. Eng. Sci., vol. 57, pp. 3217-3223.
+    
+        Inputs:
+        -Rho [kg/m^3]
+        -u = free stream velocity without tubes [m/s]
+        - a = transverse pitch ratio
+        - b = longitudinal pitch ratio
+        - a and b [m]
+        - Reynolds number calculated based on velcoity at narrowest point
+        - N = # of tubes
+        - geom = tube geometry (inline or staggered)
+        - d= tube diameter
+        - dh = hydraulic diameter
+        - Pr = Prandtl Number
+       
+        Outputs:
+        - Nusselt Number
