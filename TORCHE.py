@@ -17,24 +17,24 @@ import numpy
 import sys
 def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 ''' #####Units####
-# #a = dimensionless transverse pitch
-# #b = dimensionless longitudinal pitch
-# #v = the free stream fluid velocity in m/s 
-# #rho = density in kg/m^3
-# #u = dynamic viscosity in pa*s
-# #N = number of rows in the tube bundle 
-# #Dtube = The diamter of the tubes in the bundle in m
-# #Will work for pitch diamters of 1.25, 1.5, or 2
-# #Reynolds number needs to be below 150000
+        # #a = dimensionless transverse pitch
+        # #b = dimensionless longitudinal pitch
+        # #v = the free stream fluid velocity in m/s 
+        # #rho = density in kg/m^3
+        # #u = dynamic viscosity in pa*s
+        # #N = number of rows in the tube bundle 
+        # #Dtube = The diamter of the tubes in the bundle in m
+        # #Will work for pitch diamters of 1.25, 1.5, or 2
+        # #Reynolds number needs to be below 150000
 
-# Output Pressure Drop in kPa
-# Rotated Crossflow (k4) and Inclined Crossflow(k5)
-    #  angle of attack, α, may not be 0°, i.e., the bank may 
-    # be rotated at some arbitrary angle to the flow 
-    # The angle of incidence β is not 90°, i.e. the flow is 
-    # not exactly perpendicular to the tube bank. 
-    
-    Return dP''''
+        # Output Pressure Drop in kPa
+        # Rotated Crossflow (k4) and Inclined Crossflow(k5)
+        #  angle of attack, α, may not be 0°, i.e., the bank may 
+        # be rotated at some arbitrary angle to the flow 
+        # The angle of incidence β is not 90°, i.e. the flow is 
+        # not exactly perpendicular to the tube bank. 
+
+        Return dP'''
     x = (a-1)/(b-1);
     v_mean = v*(a/(a-1));
     if geom == 'inline':
