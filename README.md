@@ -70,7 +70,7 @@ Zukauskas Model
         Cite: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
         Hemisphere Publishing Corporation. New York, NY. 1988.
         
-        Inputs:
+            Inputs:
             -Rho = density [kg/m^3]
             -u = free stream velocity without tubes [m/s]
             -a = transverse pitch ratio
@@ -86,7 +86,7 @@ Zukauskas Model
             NOTE: Currently only applicable for staggered geometry
             Validity:10 < Re < 2e6
                      0.7 < Pr < 500
-        Output:
+            Output:
               - Nusselt Number
 ### Gnielinski-Gaddis Model
 
@@ -107,5 +107,5 @@ Based off Leveque Analogy
         - dh = hydraulic diameter
         - Pr = Prandtl Number
        
-        Outputs:
+        Output:
         - Nusselt Number
