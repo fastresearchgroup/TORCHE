@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Date of last edit: 16 Jan 2017
+Date of last edit: 2 APR 2017
 Author: Jonah Haefner
 Texas A&M University
 Thermal-hydraulics Group
@@ -23,7 +23,7 @@ def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 # #rho = density in kg/m^3
 # #u = dynamic viscosity in pa*s
 # #N = number of rows in the tube bundle 
-# #Dtube = The diamter of the tubes in the bundle in m
+# #Dtube = The diameter of the tubes in the bundle in m
 # #Will work for pitch diamters of 1.25, 1.5, or 2
 # #Reynolds number needs to be below 150000
 
@@ -179,8 +179,10 @@ def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
     Deviation form normal incidence
     '''
     k_4 = numpy.cos(numpy.deg2rad(alpha))
-    k_5 = -1E-06*beta**3 + 1E-04*beta**2 + 0.0132*beta - 0.033
-    #R² = 0.9994
+    k_5 = 1
+    if beta != 90:
+        k_5 = -1E-06*beta**3 + 1E-04*beta**2 + 0.0132*beta - 0.033
+    #R² = 0.9994. Note this is a curve fitted to experimental data and not exact
 
   #Power series for Euler number per row. From same website as above.
     Eu_p = (c_0[i])+(c_1[i]/Re**1)+(c_2[i]/Re**2)+(c_3[i]/Re**3)+(c_4[i]/Re**4);
