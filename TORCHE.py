@@ -12,9 +12,11 @@ Functions included:
     Gnielinski
     PressureDrop
 """
+
 import TORCHE
 import numpy
 import sys
+
 def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 ''' #####Units####
 # #a = dimensionless transverse pitch
@@ -294,24 +296,24 @@ def HT_Zu(a,b,u,rho,N,Pr,PrS,d,v,geom,Re):
     return Nu
     
 def dP_GG(a,b,u,rho,Re,N,geom,Return=""):
-   '''  # Rho [kg/m^3]
-        # u = free stream velocity without tubes [m/s]
-        # a = transverse pitch ratio
-        # b = longitudinal pitch ratio
-        # a and b [m]
-        # Reynolds number calculated based on velcoity at narrowest point
-        # N = # of tubes
-        #D_lam = Drag coefficient due to laminar flow
-        #D_turb = Drag coefficient due to turbulent flow
-        #f_nt = Coefficient for influence of inlet and outlet pressure losses
-        # f_ti, f_ts = geometric arragement factor  
-   
-   
-        #Calculating the velcoity through the narrowest area
-        #PRessure Drop in kPa
-        #Ranges of validity have yet to be included in this script. Information soon to come.
-        
-        Return dP
+	'''
+	Description:
+		Calculating the velcoity through the narrowest area
+	Inputs:
+		rho = density of fluid [kg/m^3]
+        u = free stream velocity [m/s]
+        a = transverse pitch ratio
+        b = longitudinal pitch ratio
+        Re = Reynolds number calculated based on velcoity at narrowest point
+        N = Number of tubes
+        D_lam = Drag coefficient due to laminar flow
+        D_turb = Drag coefficient due to turbulent flow
+        f_nt = Coefficient for influence of inlet and outlet pressure losses
+        f_ti, f_ts = geometric arragement factor  
+	Outputs:
+		dP = Pressure drop across tube bundle [Pa]
+	Warnings:
+		Ranges of validity have yet to be included in this script. Information soon to come.
         '''
    if geom == 'inline':
         u0 = u*(a/(a-1))
@@ -347,7 +349,7 @@ def dP_GG(a,b,u,rho,Re,N,geom,Return=""):
         D_tot = D_lam+(D_turb+f_nt)*(1-numpy.exp(-(Re+200)/1000));
    if Return == "D_tot":
         return D_tot    
-   PressDrop = .5*D_tot*(N*rho*u0**2)/1000; # in kPa
+   PressDrop = .5*D_tot*(N*rho*u0**2); # in kPa
    return PressDrop
 def HT_GG(a,b,d,u,rho,Re,N,geom,Pr):
     '''
@@ -371,7 +373,7 @@ def HT_GG(a,b,d,u,rho,Re,N,geom,Pr):
     '''
     xi = dP_GG(a,b,u,rho,Re,N,geom,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
     if Re > 2.5e5: #Correction made my Holger Martin for use in Heat Transfer calculation 
-        xi = xi*(1+(Re-2.5e5)/3.25e5);
+        xi = xi*(1+(Re-2.5e5)/3.25e5); # Does the xi need to be in kPa?
     xi_f = .5*xi; #Original total drag coefficient used to calculate drag coefficient due to friction ~.5
     if b > 1:
        dh=((4*a/numpy.pi)-1)*d;
