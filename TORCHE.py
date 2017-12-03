@@ -189,28 +189,30 @@ def staggered(a,b,v,rho,u,N,Dtube, Re):
       
 def HT_Zu(a,b,u,rho,N,Pr,PrS,d,v,geom,Re):
     '''
-        Zukauskas Model
-        Cite: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
+	Description:
+		Calculate Nusselt number using the Zukauskas correlatioj
+	Inputs:
+		a = transverse pitch ratio
+		b = longitudinal pitch ratio
+		u = free stream velocity without tubes [m/s]
+		rho = density of the fluid [kg/m^3]
+		N = Number of tubes
+		Pr = Prandtl Number of the fluid
+		PrS = Prandtl Number of the fluid at wall film temperature
+		d = Tube Diameter [m]
+		v = kinematic viscosity (m^2/s)
+		geoom = inline or staggered
+		Re = Reynolds number calculated based on velcoity at narrowest point
+	Outputs:
+		Nu = Nusselt number
+    Warnings:
+	    NOTE: Currently only applicable for staggered geometry 
+		Validity:	10 < Re < 2e6
+					0.7 < Pr < 500
+	Citation: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
         Hemisphere Publishing Corporation. New York, NY. 1988.
-        
-        Inputs:
-            # Rho = density [kg/m^3]
-            # u = free stream velocity without tubes [m/s]
-            # a = transverse pitch ratio
-            # b = longitudinal pitch ratio
-            # a and b [m]
-            # Reynolds number calculated based on velcoity at narrowest point
-            # N = # of tubes
-            # Pr = Prandtl Number
-            # d = Tube Diameter
-            # PrS = Wall Prandtl Number
-            # v = kinematic viscosity (m^2/s)
-            
-            NOTE: Currently only applicable for staggered geometry
-            Validity:10 < Re < 2e6
-                     0.7 < Pr < 500
-        Return Nusselt Number
-        '''
+	'''
+	
     c = numpy.sqrt(b**2+(a/2)**2)
     if c > (a+d)/2:
         Vmax= a/(a-d)*u
