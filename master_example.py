@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Created on Mon Feb 13 20:25:03 2017
 
@@ -8,7 +7,7 @@ Title: master_example.py
 
 The purpose of this script is to ensure the four functions included in this
 package are functioning properly
-dP_1 = 27.12 kPa  
+dP_1 = 27.12 kPa   - This needs to be investigated. I think it is due to the angle of attack.
 dP 2 = 25.67 kPa
 Nu1 = 142.52
 Nu2 = 147.31
