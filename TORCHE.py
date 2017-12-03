@@ -1,16 +1,22 @@
 # -*- coding: utf-8 -*-
 """
 Date of last edit: 2 APR 2017
-Author: Jonah Haefner
+Author(s): Jonah Haefner and Lane Carasik
 Texas A&M University
 Thermal-hydraulics Group
 
-Title: Heat Transfer Models for Crossflow Heat Exchangers
+Kairos Power LLC.
+Modeling and Simulation Group
 
-Functions included:
-    Zukauskas
-    Gnielinski
-    PressureDrop
+TOolbox for Reactor Cross-Flow Heat Exchangers: Python Scripts for calculation of Pressure drop and Heat Transfer for crossflow tube bundles based on models found across the literature..
+
+Functionality:
+	Pressure Drop Models
+		- Zukauskas
+		- Gaddis-Gnielinski
+	Heat Transfer Models
+		- Zukauskas
+		- Gaddis-Gnielinski
 """
 
 import numpy
