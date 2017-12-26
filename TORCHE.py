@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Date of last edit: 2 APR 2017
 Author(s): Jonah Haefner and Lane Carasik
@@ -36,8 +35,10 @@ def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	# #Reynolds number needs to be below 150000
 
 	# Output Pressure Drop in kPa
+	
+		This needs to be better explained. It almost suggests that alpha CAN not be 0 and that beta CAN not be 90.
 	# Rotated Crossflow (k4) and Inclined Crossflow(k5)
-    #  angle of attack, α, may not be 0°, i.e., the bank may 
+    # angle of attack, α, may not be 0°, i.e., the bank may 
     # be rotated at some arbitrary angle to the flow 
     # The angle of incidence β is not 90°, i.e. the flow is 
     # not exactly perpendicular to the tube bank. 
@@ -48,7 +49,7 @@ def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	print('Has not been added in yet: k_1 for unequal pitch-diameter ratios 
 	Can be found in graphical form in Zukauskas' High Performance Single Phase Heat Exchangers
 	Electronically found in cubic splines based of Re at: 
-	http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes
+	http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes'}
 	'''
 	x = (a-1)/(b-1)
 	v_mean = v*(a/(a-1))
@@ -227,7 +228,7 @@ def HT_Zu(a,b,u,rho,N,Pr,PrS,d,v,geom,Re):
 #    Re= d*Vmax/v
     
     if geom == 'inline':  
-        n= 0.36
+        n = 0.36
         ###Correction for less than 20 tube rows
         if N <=14:
             c2v = [.7,.8,.85,.9,.92,.94,.95,.96,.97,.97,.98,.98,.99,.99]
