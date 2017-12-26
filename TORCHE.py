@@ -22,16 +22,16 @@ Functionality:
 import numpy as np
 import sys
 
-def dP_Zu(rho,mu,a,b,v,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
+def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	'''
 	Description:
 		Calculating the presssure drop using the Zhukauskas correlation
 	Inputs:
 		rho = density of the fluid [kg/m^3]
+		mu = dynamic viscosity of the fluid [Pa-s]
 		a = transverse pitch to diameter ratio
 		b = longitudinal pitch to diameter ratio
 	# #v = the free stream fluid velocity in m/s 
-	# #rho = density in kg/m^3
 	# #u = dynamic viscosity in pa*s
 	# #N = number of rows in the tube bundle 
 	# #Dtube = The diameter of the tubes in the bundle in m
@@ -56,7 +56,7 @@ def dP_Zu(rho,mu,a,b,v,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes'}
 	'''
 	x = (a-1)/(b-1)
-	v_max = v*(a/(a-1))
+	v_max = u*(a/(a-1))
 	if geom == 'inline':
         # These are valid for Reynolds numbers between 2E3 and 2E6 %
 		if Re > 2E3:
@@ -115,9 +115,9 @@ def dP_Zu(rho,mu,a,b,v,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	if geom in ['staggered','STAGGERED']:
 		#Mean Velocity Calculations. Found on same website as above
 		if a <= (2*b**2 -.5):
-			v_max = v*(a/(a-1))
+			v_max = u*(a/(a-1))
 		if a > (2*b**2 -.5):
-			v_max = v*(a/(np.sqrt(4*b^2+a^2)-2))                     
+			v_max = u*(a/(np.sqrt(4*b^2+a^2)-2))                     
 		if Re < 1E3:
 			c_0 = [.795,.683,.343]				#b = 1.25, 1.5, and 2
 			c_1 = [.247E3,.111E3,.303E3]		#b = 1.25, 1.5, and 2

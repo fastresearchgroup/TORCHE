@@ -32,7 +32,7 @@ Pr_w = 1 		# Prandtl number of the working fluid based on the wall film temperat
 vel	= 0.5		# Free-stream velocity before interacting with the tube bank (m/s)
 Re = 22000		# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
 
-dP_1 = TORCHE.dP_Zu(rho,mu,a,b,vel,N_rows,Re,'inline')
+dP_1 = TORCHE.dP_Zu(rho,mu,a,b,geom,N_rows,vel,Re)
 print('The Pressure Drop calculated by Zukauskas is',dP_1/1000,'kPa')
 dP_2 = TORCHE.dP_GG(rho,a,b,geom,N_rows,vel,Re,Return="")
 print('The Pressure Drop calculated by Gaddis-Gnielinski is',dP_2/1000,'kPa')
