@@ -12,10 +12,10 @@ TOolbox for Reactor Cross-Flow Heat Exchangers: Python Scripts for calculation o
 Functionality:
 	Pressure Drop Models
 		- Zukauskas (Inline and Staggered)
-		- Gaddis-Gnielinski
+		- Gaddis-Gnielinski (Inline and Staggered)
 	Heat Transfer Models
 		- Zukauskas (Staggered)
-		- Gaddis-Gnielinski
+		- Gaddis-Gnielinski (Inline and Staggered)
 """
 
 import numpy
@@ -300,6 +300,8 @@ def dP_GG(a,b,u,rho,Re,N,geom,Return=""):
 		dP = Pressure drop across tube bundle [Pa]
 	Warnings:
 		Ranges of validity have yet to be included in this script. Information soon to come.
+	Citation:
+		1. VDI Heat Atlas 2nd Edition p. 1094-96
     '''
 	if geom == 'inline':
 		u0 = u*(a/(a-1))

@@ -1,0 +1,8 @@
+Need to add issues:
+1. Add the analytical solution of Khan et. al. "Convection Heat Transfer from tube banks in crossflow: Analytical Approach"
+2. Add VDI Heat Atlas equations for pressure drop and heat transfer
+3. Add pressure drop correlations for packed beds for pebble bed reactor geometries
+4. Add pressure drop across non-circular tubes in cross-flow such as ovals
+5. Add test problem from example in VDI Heat Atlas 2nd Edition pg. 1082-84
+6. Look into VDI Heat Atlas 2nd Edition L1 p. 1076 for a comprehensive review of cross-flow.
+7. Add heat transfer correlation for helical coils
