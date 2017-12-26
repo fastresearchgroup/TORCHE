@@ -12,23 +12,22 @@ Python Scripts for calculation of Pressure drop and Heat Transfer for crossflow 
 
 Functionality:
 	Pressure Drop Models
-		- Zukauskas (Inline and Staggered)
+		- Zhukauskas (Inline and Staggered)
 		- Gaddis-Gnielinski (Inline and Staggered)
 	Heat Transfer Models
-		- Zukauskas (Staggered)
+		- Zhukauskas (Staggered)
 		- Gaddis-Gnielinski (Inline and Staggered)
 """
 
 import numpy as np
 import sys
 
-def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
+def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	'''
 	Description:
 		Calculating the presssure drop using the Zhukauskas correlation
 	Inputs:
 		rho = density of the fluid [kg/m^3]
-		mu = dynamic viscosity of the fluid [Pa-s]
 		a = transverse pitch to diameter ratio
 		b = longitudinal pitch to diameter ratio
 		geom = tube geometry (inline or staggered) [string]
@@ -51,7 +50,7 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	x = (a-1)/(b-1)
 	v_max = u*(a/(a-1))
 	if geom == 'inline':
-        # These are valid for Reynolds numbers between 2E3 and 2E6 %
+        # These are valid for Reynolds numbers between 2E3 and 2E6
 		if Re > 2E3:
 			c_0 = np.array([.267, .235, .247])      #b = 1.25, 1.5, and 2
 			c_1 = np.array([.249E4, .197E4, -.595]) #b = 1.25, 1.5, and 2

@@ -6,3 +6,4 @@ Need to add issues:
 5. Add test problem from example in VDI Heat Atlas 2nd Edition pg. 1082-84
 6. Look into VDI Heat Atlas 2nd Edition L1 p. 1076 for a comprehensive review of cross-flow.
 7. Add heat transfer correlation for helical coils
+8 Need to remove the specific corrections from the dP_Zu function and make them general. Allow the user to decide if they want to use it or not.
