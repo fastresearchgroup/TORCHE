@@ -24,9 +24,12 @@ import sys
 
 def dP_Zu(rho,mu,a,b,v,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	'''
-	#####Units####
-	#a = dimensionless transverse pitch	
-	# #b = dimensionless longitudinal pitch
+	Description:
+		Calculating the presssure drop using the Zhukauskas correlation
+	Inputs:
+		rho = density of the fluid [kg/m^3]
+		a = transverse pitch to diameter ratio
+		b = longitudinal pitch to diameter ratio
 	# #v = the free stream fluid velocity in m/s 
 	# #rho = density in kg/m^3
 	# #u = dynamic viscosity in pa*s
@@ -186,21 +189,20 @@ def dP_Zu(rho,mu,a,b,v,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	dP_total = dP*N #pressure drop across N rows in Pa   
 	return dP_total
 
-def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
+def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
     '''
 	Description:
 		Calculate Nusselt number using the Zukauskas correlation
 	Inputs:
-		a = transverse pitch ratio
-		b = longitudinal pitch ratio
-		u = free stream velocity without tubes [m/s]
 		rho = density of the fluid [kg/m^3]
-		N = Number of tubes
 		Pr = Prandtl Number of the fluid
-		PrS = Prandtl Number of the fluid at wall film temperature
+		Pr_w = Prandtl Number of the fluid at wall film temperature
+		a = transverse pitch to diameter ratio
+		b = longitudinal pitch to diameter ratio
 		d = Tube Diameter [m]
-		v = kinematic viscosity (m^2/s)
 		geom = inline or staggered
+		N = Number of tubes
+		u = free stream velocity without tubes [m/s]
 		Re = Reynolds number calculated based on velcoity at narrowest point
 	Outputs:
 		Nu = Nusselt number
@@ -217,7 +219,6 @@ def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
         Vmax= a/(a-d)*u
     else:
         Vmax= a/(2(b-d))*u
-#    Re= d*Vmax/v
     
     if geom == 'inline':  
         n = 0.36
@@ -225,7 +226,7 @@ def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
         if N <=14:
             c2v = [.7,.8,.85,.9,.92,.94,.95,.96,.97,.97,.98,.98,.99,.99]
             c2 = c2v[N-1]
-    ### Coefficients based on range of Reynolds Number
+		### Coefficients based on range of Reynolds Number
         if Re > 1.6 and Re <= 100:
             c1 = 0.90
             m =  0.40
@@ -270,24 +271,22 @@ def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
         else:
             print( 'Re out of Range')
     
-    Nu = c1*c2*(Re**m)*(Pr**n)*(Pr/PrS)**.25
+    Nu = c1*c2*(Re**m)*(Pr**n)*(Pr/Pr_w)**.25
     return Nu
     
-def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
+def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 	'''
 	Description:
-		Calculating the velcoity through the narrowest area
+		Calculate the pressure drop or total drag coefficient through a tube bundle using the Gaddis-Gnielinski correlation
 	Inputs:
 		rho = density of fluid [kg/m^3]
-        u = free stream velocity [m/s]
         a = transverse pitch ratio
         b = longitudinal pitch ratio
-        Re = Reynolds number calculated based on velcoity at narrowest point
-        N = Number of tubes
-        D_lam = Drag coefficient due to laminar flow
-        D_turb = Drag coefficient due to turbulent flow
-        f_nt = Coefficient for influence of inlet and outlet pressure losses
-        f_ti, f_ts = geometric arragement factor  
+		geom = tube geometry (inline or staggered) [string]
+		N = Number of tubes
+		u = free stream velocity [m/s]
+        Re = Reynolds number calculated based on velcoity at narrowest point and tube outer diameter
+		Return = Blank returns pressure drop and "D_tot" returns total drag coefficient
 	Outputs:
 		dP = Pressure drop across tube bundle [Pa]
 	Warnings:
@@ -297,15 +296,15 @@ def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
     '''
 	if geom == 'inline':
 		u0 = u*(a/(a-1))
-		D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)
+		D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)	# Drag coefficient due to laminar flow
 		if (N > 5 and N <= 10):
-			f_nt= (1/a**2)*(1/N-.1)
+			f_nt= (1/a**2)*(1/N-.1)						# Coefficient for influence of inlet and outlet pressure losses
 		elif N > 10:
-			f_nt = 0
+			f_nt = 0									# Coefficient for influence of inlet and outlet pressure losses
 		elif N <=5:
 			sys.exit('Model only valid for greater than 5 tubes')
-		f_ti = (0.22+1.2*(1-(0.94/b))**(0.6)/(a-0.85)**1.3)*10**(0.47*(b/a-1.5))+0.03*(a-1)*(b-1)
-		D_turb = f_ti/(Re**(.1*b/a))
+		f_ti = (0.22+1.2*(1-(0.94/b))**(0.6)/(a-0.85)**1.3)*10**(0.47*(b/a-1.5))+0.03*(a-1)*(b-1) # Coefficient for geometric arrangement factor  
+		D_turb = f_ti/(Re**(.1*b/a))					# Drag coefficient due to turbulent flow
 		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+1000)/2000))
 	if geom == "staggered":
 		N = N-1
@@ -314,18 +313,19 @@ def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
 			u0 = u*a/(2*(c-1))
 			D_lam= 280*np.pi*((b**.5-0.6)**2+0.75)/((c**1.6)*(4*a*b-np.pi)*Re)
 			if (N > 5 and N <= 10):
-				f_nt = (2*(c-1)/a*(a-1)**2)*(1/N-.1)
+				f_nt = (2*(c-1)/a*(a-1)**2)*(1/N-.1)	# Coefficient for influence of inlet and outlet pressure losses
 			elif N > 10:
-				f_nt = 0
+				f_nt = 0								# Coefficient for influence of inlet and outlet pressure losses
 		else:
 			u0 = u*(a/(a-1))
 			D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)
 			if (N > 5 and N <= 10):
-				f_nt= (1/a**2)*(1/N-.1)
+				f_nt= (1/a**2)*(1/N-.1)					# Coefficient for influence of inlet and outlet pressure losses
 			elif N > 10:
-				f_nt = 0
-		f_ts = 2.5+1.2/(a-0.85)**1.08+0.4*(b/a-1)**3-0.01*(a/b-1)**3
-		D_turb = f_ts/Re**0.25
+				f_nt = 0								# Coefficient for influence of inlet and outlet pressure losses
+				
+		f_ts = 2.5+1.2/(a-0.85)**1.08+0.4*(b/a-1)**3-0.01*(a/b-1)**3	# Coefficient for geometric arrangement factor  
+		D_turb = f_ts/Re**0.25							# Drag coefficient due to turbulent flow
 		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+200)/1000))
 	if Return == "D_tot":
 		return D_tot    
@@ -333,21 +333,20 @@ def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
    
 	return PressDrop
    
-def HT_GG(rho,a,b,d,u,Re,N,geom,Pr):
+def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
 	'''
 	Description:
-		Calculating the heat transfer coefficient using the Gnielinski and Martin Model based on the Leveque Analogy
+		Calculating the nusselt number using the Gnielinski and Martin Model based on the Leveque Analogy
 	Inputs:
 		rho = density of fluid [kg/m^3]
-        u = free stream velocity [m/s]
+		Pr = Prandtl Number of the fluid
         a = transverse pitch ratio
         b = longitudinal pitch ratio
-        Re = Reynolds number calculated based on velcoity at narrowest point and outside tube diameter
-        N = Number of tubes
-		geom = tube geometry (inline or staggered) [string]
 		d = tube diameter [m]
-		dh = hydraulic diameter [m]
-		Pr = Prandtl Number of the fluid
+		geom = tube geometry (inline or staggered) [string]
+		N = Number of tubes
+		u = free stream velocity [m/s]
+        Re = Reynolds number calculated based on velcoity at narrowest point and outside tube diameter
 	Outputs:
 		Nu = Nusselt Number
 	Warnings:
@@ -355,8 +354,8 @@ def HT_GG(rho,a,b,d,u,Re,N,geom,Pr):
 	Citation: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,”
 		Chem. Eng. Sci., vol. 57, pp. 3217-3223.
     '''
-	xi = dP_GG(rho,a,b,u,Re,N,geom,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
-	if Re > 2.5e5: #Correction made my Holger Martin for use in Heat Transfer calculation 
+	xi = dP_GG(rho,a,b,geom,N,u,Re,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
+	if Re > 2.5e5: # Correction made Holger Martin for use in Heat Transfer calculation 
 		xi = xi*(1+(Re-2.5e5)/3.25e5)
 	xi_f = .5*xi #Original total drag coefficient used to calculate drag coefficient due to friction ~.5
 	if b > 1:
@@ -368,7 +367,7 @@ def HT_GG(rho,a,b,d,u,Re,N,geom,Pr):
 		L=c*d
 	if geom == 'inline':
 		L=b*d
-	NuPr=0.404*(xi_f*Re**2*dh/L)**(1/3) #Nu/Pr**(1/3)
+	NuPr = 0.404*(xi_f*Re**2*dh/L)**(1/3) #Nu/Pr**(1/3)
 	Nu = NuPr*(Pr)**(1/3)
 	return Nu
     

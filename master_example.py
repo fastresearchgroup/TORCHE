@@ -19,20 +19,24 @@ import TORCHE
 d = 0.0254		# Outside diameter of tube or cylinder (m)
 a = 1.25 		# Transverse pitch to diameter ratio
 b = 1.25		# Longitudinal pitch to diameter ratio
+geom = 'inline' # Tube layout 
+N_rows = 10 	# Number of tube rows
 
 # Fluid thermo-physical properties
 rho = 1940 		# Density of the working fluid - FLiBe (kg/m^3)
-mu = 0.0056 	# Dynamics visocity of the working fluid - FLiBe (Pa-s)
+mu = 0.0056 	# Dynamic visocity of the working fluid - FLiBe (Pa-s)
+Pr = 1			# Prandtl number of the working fluid
+Pr_w = 1 		# Prandtl number of the working fluid based on the wall film temperature
 
 # Flow behavior
 vel	= 0.5		# Free-stream velocity before interacting with the tube bank (m/s)
+Re = 22000		# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
 
-
-dP_1 = TORCHE.dP_Zu(rho,mu,a,b,vel,10,22000,'inline')
+dP_1 = TORCHE.dP_Zu(rho,mu,a,b,vel,N_rows,Re,'inline')
 print('The Pressure Drop calculated by Zukauskas is',dP_1/1000,'kPa')
-dP_2 = TORCHE.dP_GG(rho,a,b,vel,22000,10,'inline')
+dP_2 = TORCHE.dP_GG(rho,a,b,geom,N_rows,vel,Re,Return="")
 print('The Pressure Drop calculated by Gaddis-Gnielinski is',dP_2/1000,'kPa')
-Nu_1 = TORCHE.HT_Zu(rho,a,b,d,vel,10,1,1,1.787e-6,'inline',22000)
+Nu_1 = TORCHE.HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N_rows,vel,Re)
 print('The Nusselt Number calculated by Zukauskas is', Nu_1)
-Nu_2 = TORCHE.HT_GG(rho,a,b,d,vel,22000,10,'inline',1)
+Nu_2 = TORCHE.HT_GG(rho,Pr,a,b,d,geom,N_rows,vel,Re)
 print('The Nusselt Number calculated by Gnielinski is', Nu_2)
