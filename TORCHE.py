@@ -11,10 +11,10 @@ TOolbox for Reactor Cross-Flow Heat Exchangers: Python Scripts for calculation o
 
 Functionality:
 	Pressure Drop Models
-		- Zukauskas
+		- Zukauskas (Inline and Staggered)
 		- Gaddis-Gnielinski
 	Heat Transfer Models
-		- Zukauskas
+		- Zukauskas (Staggered)
 		- Gaddis-Gnielinski
 """
 
@@ -358,7 +358,6 @@ def HT_GG(a,b,d,u,rho,Re,N,geom,Pr):
 		Nu = Nusselt Number
 	Warnings:
 		Ranges of validity have yet to be included in this script. Information soon to come.
-		Need to check whether or not the input from the dP_GG function should be in Pa or kPA
 	Citation: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,”
 		Chem. Eng. Sci., vol. 57, pp. 3217-3223.
     '''
