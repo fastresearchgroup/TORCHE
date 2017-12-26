@@ -66,15 +66,16 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 			c_0 = np.array([.272, .263, .188])      #b = 1.25, 1.5, and 2
 			c_1 = np.array([.207E3, .867E2, 56.6])  #b = 1.25, 1.5, and 2
 			c_2 = np.array([.102E3, -.202, -646])   #b = 1.25, 1.5, and 2
-			c_3 =np.array([-.286E3, 0, 6010])      #b = 1.25, 1.5, and 2
+			c_3 =np.array([-.286E3, 0, 6010])		#b = 1.25, 1.5, and 2
 			c_4 = np.array([0, 0, -18300])          #b = 1.25, 1.5, and 2
+			if b == 2:
+				print('There may be errors when b=2 and Re < 800')
 		elif Re <= 2E3 and Re > 800:
 			c_0 = np.array([.272, .263, .247])      #b = 1.25, 1.5, and 2
 			c_1 = np.array([.207E3, .867E2, 56.6-(4.766E-2*Re)]) #b = 1.25, 1.5, and 2
 			c_2 = np.array([.102E3, -.202, .15]) #b = 1.25, 1.5, and 2
 			c_3 = np.array([-.286E3, 0, -.137]) #b = 1.25, 1.5, and 2
 			c_4 = np.array([0, 0, .396])     #b = 1.25, 1.5, and 2
-        #There may be errors when b=2 and Re < 800 
         
         ##########Correction Factors #################
         
