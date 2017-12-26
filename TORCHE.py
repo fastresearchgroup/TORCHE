@@ -106,7 +106,6 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 			print('Reynolds number needs to be greater than 100')
 		
 	if geom in ['staggered','STAGGERED']:
-		#Mean Velocity Calculations. Found on same website as above
 		if a <= (2*b**2 -.5):
 			v_max = u*(a/(a-1))
 		if a > (2*b**2 -.5):
@@ -352,20 +351,28 @@ def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
 	Citation: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,”
 		Chem. Eng. Sci., vol. 57, pp. 3217-3223.
     '''
-	xi = dP_GG(rho,a,b,geom,N,u,Re,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
-	if Re > 2.5e5: # Correction made Holger Martin for use in Heat Transfer calculation 
-		xi = xi*(1+(Re-2.5e5)/3.25e5)
-	xi_f = .5*xi #Original total drag coefficient used to calculate drag coefficient due to friction ~.5
+	
 	if b > 1:
-	   dh=((4*a/np.pi)-1)*d
+	   dh=((4*a/np.pi)-1)*d						# Hydraulic diameter [m]
 	else:
-	   dh=((4*a*b/np.pi)-1)*d
+	   dh=((4*a*b/np.pi)-1)*d					# Hydraulic diameter [m]
+	   
 	if geom == 'staggered':
 		c=((a/2)**2+b**2)**.5
 		L=c*d
+		
 	if geom == 'inline':
 		L=b*d
+
+	xi = dP_GG(rho,a,b,geom,N,u,Re,"D_tot") 	# Drag Coefficient from Gaddis-Gnielinski Pressure Drop Model
+	
+	if Re > 2.5e5: 								 
+		xi = xi*(1+(Re-2.5e5)/3.25e5)			# Correction made Holger Martin for use in Heat Transfer calculation
+		
+	xi_f = .5*xi 								# Total drag coefficient used to calculate drag coefficient due to friction ~.5
+		
 	NuPr = 0.404*(xi_f*Re**2*dh/L)**(1/3) #Nu/Pr**(1/3)
 	Nu = NuPr*(Pr)**(1/3)
+	
 	return Nu
     
