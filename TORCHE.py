@@ -36,7 +36,7 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 		u = free stream velocity [m/s]
         Re = Reynolds number calculated based on velcoity at narrowest point and tube outer diameter
 	Output:
-		dP = Pressure Drop across tubes [Pa]
+		dP_total = Pressure Drop across tubes [Pa]
 	Warnings:
 		Validity:	Re < 150000
 					0.7 < Pr < 500
@@ -181,8 +181,8 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	Eu = Eu_p*k_1*k_2*k_3*k_4*k_5
 	
     #Using the relation Eu = dP/((1/2)*rho*v^2)
-	dP = Eu*((rho*v_max**2)/2) #Pressure drop per row 
-	dP_total = dP*N #pressure drop across N rows in Pa
+	dP = Eu*((rho*v_max**2)/2)		# Pressure drop per row [Pa]
+	dP_total = dP*N					# Pressure drop across tube bundle [Pa]
 	
 	return dP_total
 
@@ -269,6 +269,7 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
             print( 'Re out of Range')
     
     Nu = c1*c2*(Re**m)*(Pr**n)*(Pr/Pr_w)**.25
+	
     return Nu
     
 def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
@@ -285,7 +286,7 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
         Re = Reynolds number calculated based on velcoity at narrowest point and tube outer diameter
 		Return = Blank returns pressure drop and "D_tot" returns total drag coefficient
 	Outputs:
-		dP = Pressure drop across tube bundle [Pa]
+		dP_total = Pressure drop across tube bundle [Pa]
 	Warnings:
 		Ranges of validity have yet to be included in this script. Information soon to come.
 	Citation:
@@ -322,13 +323,15 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 				f_nt = 0								# Coefficient for influence of inlet and outlet pressure losses
 				
 		f_ts = 2.5+1.2/(a-0.85)**1.08+0.4*(b/a-1)**3-0.01*(a/b-1)**3	# Coefficient for geometric arrangement factor  
-		D_turb = f_ts/Re**0.25							# Drag coefficient due to turbulent flow
-		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+200)/1000))
+		D_turb = f_ts/Re**0.25											# Drag coefficient due to turbulent flow
+		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+200)/1000))			# Total drag coefficient based on laminar and turbulent contributions
+
 	if Return == "D_tot":
-		return D_tot    
-	PressDrop = .5*D_tot*(N*rho*u0**2)
+		return D_tot
+	
+	dP_total = .5*D_tot*(N*rho*u0**2) 					# Pressure drop across tube bundle [Pa]
    
-	return PressDrop
+	return dP_total
    
 def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
 	'''
