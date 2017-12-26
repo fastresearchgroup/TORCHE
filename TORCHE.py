@@ -194,7 +194,7 @@ def staggered(a,b,v,rho,u,N,Dtube, Re):
     PD= TORCHE.dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom)
     return PD 
       
-def HT_Zu(a,b,u,rho,N,Pr,PrS,d,v,geom,Re):
+def HT_Zu(a,b,d,u,rho,N,Pr,PrS,v,geom,Re):
     '''
 	Description:
 		Calculate Nusselt number using the Zukauskas correlatioj
@@ -365,7 +365,7 @@ def HT_GG(a,b,d,u,rho,Re,N,geom,Pr):
     '''
 	xi = dP_GG(a,b,u,rho,Re,N,geom,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
 	if Re > 2.5e5: #Correction made my Holger Martin for use in Heat Transfer calculation 
-		xi = xi*(1+(Re-2.5e5)/3.25e5) # Does the xi need to be in kPa?
+		xi = xi*(1+(Re-2.5e5)/3.25e5)
 	xi_f = .5*xi #Original total drag coefficient used to calculate drag coefficient due to friction ~.5
 	if b > 1:
 	   dh=((4*a/numpy.pi)-1)*d
