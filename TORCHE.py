@@ -21,7 +21,7 @@ Functionality:
 import numpy
 import sys
 
-def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
+def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	'''
 	#####Units####
 	#a = dimensionless transverse pitch	
@@ -155,11 +155,11 @@ def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 			k_3 = el_3(N)
 
 		k_1 = 1;
-		'''
-		Influence of temperature on fluid properties
-		From: Heat Exchanger Design Handbook 1983
-		'''
-	p=1;
+	'''
+	Influence of temperature on fluid properties
+	From: Heat Exchanger Design Handbook 1983
+	'''
+	p = 1
 	if eta_wall>eta:
 		p=0.776*numpy.exp(-0.545*Re**0.256)
 	elif eta_wall < eta and Re < 10E3:
@@ -184,17 +184,7 @@ def dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	dP_total = dP*N #pressure drop across N rows in Pa   
 	return dP_total
 
-def inline(a,b,v,rho,u,N,Dtube, Re):
-    geom = 'inline'
-    PD= TORCHE.dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom)
-    return PD
-    
-def staggered(a,b,v,rho,u,N,Dtube, Re):
-    geom = 'staggered'
-    PD= TORCHE.dP_Zu(a,b,v,rho,u,N,Dtube, Re,geom)
-    return PD 
-      
-def HT_Zu(a,b,d,u,rho,N,Pr,PrS,v,geom,Re):
+def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
     '''
 	Description:
 		Calculate Nusselt number using the Zukauskas correlatioj
@@ -208,7 +198,7 @@ def HT_Zu(a,b,d,u,rho,N,Pr,PrS,v,geom,Re):
 		PrS = Prandtl Number of the fluid at wall film temperature
 		d = Tube Diameter [m]
 		v = kinematic viscosity (m^2/s)
-		geoom = inline or staggered
+		geom = inline or staggered
 		Re = Reynolds number calculated based on velcoity at narrowest point
 	Outputs:
 		Nu = Nusselt number
@@ -281,7 +271,7 @@ def HT_Zu(a,b,d,u,rho,N,Pr,PrS,v,geom,Re):
     Nu = c1*c2*(Re**m)*(Pr**n)*(Pr/PrS)**.25
     return Nu
     
-def dP_GG(a,b,u,rho,Re,N,geom,Return=""):
+def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
 	'''
 	Description:
 		Calculating the velcoity through the narrowest area
@@ -341,7 +331,7 @@ def dP_GG(a,b,u,rho,Re,N,geom,Return=""):
    
 	return PressDrop
    
-def HT_GG(a,b,d,u,rho,Re,N,geom,Pr):
+def HT_GG(rho,a,b,d,u,Re,N,geom,Pr):
 	'''
 	Description:
 		Calculating the heat transfer coefficient using the Gnielinski and Martin Model based on the Leveque Analogy
@@ -363,7 +353,7 @@ def HT_GG(a,b,d,u,rho,Re,N,geom,Pr):
 	Citation: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,”
 		Chem. Eng. Sci., vol. 57, pp. 3217-3223.
     '''
-	xi = dP_GG(a,b,u,rho,Re,N,geom,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
+	xi = dP_GG(rho,a,b,u,Re,N,geom,"D_tot") # Pressure Drop Coefficient from Gaddis-Gnielinski Pressure Drop Model
 	if Re > 2.5e5: #Correction made my Holger Martin for use in Heat Transfer calculation 
 		xi = xi*(1+(Re-2.5e5)/3.25e5)
 	xi_f = .5*xi #Original total drag coefficient used to calculate drag coefficient due to friction ~.5
