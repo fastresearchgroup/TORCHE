@@ -19,7 +19,7 @@ Functionality:
 		- Gaddis-Gnielinski (Inline and Staggered)
 """
 
-import numpy
+import numpy as np
 import sys
 
 def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
@@ -57,23 +57,23 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	if geom == 'inline':
         # These are valid for Reynolds numbers between 2E3 and 2E6 %
 		if Re > 2E3:
-			c_0 = numpy.array([.267, .235, .247])      #b = 1.25, 1.5, and 2
-			c_1 = numpy.array([.249E4, .197E4, -.595]) #b = 1.25, 1.5, and 2
-			c_2 = numpy.array([-.927E7, -.124E8, .15]) #b = 1.25, 1.5, and 2
-			c_3 = numpy.array([.1E11, .312E11, -.137]) #b = 1.25, 1.5, and 2
-			c_4 = numpy.array([0, -.274E14, .396])     #b = 1.25, 1.5, and 2
+			c_0 = np.array([.267, .235, .247])      #b = 1.25, 1.5, and 2
+			c_1 = np.array([.249E4, .197E4, -.595]) #b = 1.25, 1.5, and 2
+			c_2 = np.array([-.927E7, -.124E8, .15]) #b = 1.25, 1.5, and 2
+			c_3 = np.array([.1E11, .312E11, -.137]) #b = 1.25, 1.5, and 2
+			c_4 = np.array([0, -.274E14, .396])     #b = 1.25, 1.5, and 2
 		elif Re <= 800 and Re > 3:
-			c_0 = numpy.array([.272, .263, .188])      #b = 1.25, 1.5, and 2
-			c_1 = numpy.array([.207E3, .867E2, 56.6])  #b = 1.25, 1.5, and 2
-			c_2 = numpy.array([.102E3, -.202, -646])   #b = 1.25, 1.5, and 2
-			c_3 =numpy.array([-.286E3, 0, 6010])      #b = 1.25, 1.5, and 2
-			c_4 = numpy.array([0, 0, -18300])          #b = 1.25, 1.5, and 2
+			c_0 = np.array([.272, .263, .188])      #b = 1.25, 1.5, and 2
+			c_1 = np.array([.207E3, .867E2, 56.6])  #b = 1.25, 1.5, and 2
+			c_2 = np.array([.102E3, -.202, -646])   #b = 1.25, 1.5, and 2
+			c_3 =np.array([-.286E3, 0, 6010])      #b = 1.25, 1.5, and 2
+			c_4 = np.array([0, 0, -18300])          #b = 1.25, 1.5, and 2
 		elif Re <= 2E3 and Re > 800:
-			c_0 = numpy.array([.272, .263, .247])      #b = 1.25, 1.5, and 2
-			c_1 = numpy.array([.207E3, .867E2, 56.6-(4.766E-2*Re)]) #b = 1.25, 1.5, and 2
-			c_2 = numpy.array([.102E3, -.202, .15]) #b = 1.25, 1.5, and 2
-			c_3 = numpy.array([-.286E3, 0, -.137]) #b = 1.25, 1.5, and 2
-			c_4 = numpy.array([0, 0, .396])     #b = 1.25, 1.5, and 2
+			c_0 = np.array([.272, .263, .247])      #b = 1.25, 1.5, and 2
+			c_1 = np.array([.207E3, .867E2, 56.6-(4.766E-2*Re)]) #b = 1.25, 1.5, and 2
+			c_2 = np.array([.102E3, -.202, .15]) #b = 1.25, 1.5, and 2
+			c_3 = np.array([-.286E3, 0, -.137]) #b = 1.25, 1.5, and 2
+			c_4 = np.array([0, 0, .396])     #b = 1.25, 1.5, and 2
         #There may be errors when b=2 and Re < 800 
         
         ##########Correction Factors #################
@@ -90,9 +90,9 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 				k_1 = .988*x**(-.6388)
         # Entry Losses #                   
         # Entry loss coefficients (Re > 1E4 but < 1E6) 
-		el_1 = numpy.array([1.9, 1.1, 1, 1, 1, 1, 1])
+		el_1 = np.array([1.9, 1.1, 1, 1, 1, 1, 1])
         #Entry loss coefficients (Re > 1E6)
-		el_2 = numpy.array([2.7, 1.8, 1.5, 1.4, 1.3, 1.2, 1.2])
+		el_2 = np.array([2.7, 1.8, 1.5, 1.4, 1.3, 1.2, 1.2])
 		if (b == 1.25):
 			i = 0
 		elif (b == 1.5):
@@ -113,7 +113,7 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 		if a <= (2*b**2 -.5):
 			v_mean = v*(a/(a-1))
 		if a > (2*b**2 -.5):
-			v_mean = v*(a/(numpy.sqrt(4*b^2+a^2)-2))                     
+			v_mean = v*(a/(np.sqrt(4*b^2+a^2)-2))                     
 		if Re < 1E3:
 			c_0 = [.795,.683,.343]				#b = 1.25, 1.5, and 2
 			c_1 = [.247E3,.111E3,.303E3]		#b = 1.25, 1.5, and 2
@@ -162,15 +162,15 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	'''
 	p = 1
 	if eta_wall>eta:
-		p=0.776*numpy.exp(-0.545*Re**0.256)
+		p=0.776*np.exp(-0.545*Re**0.256)
 	elif eta_wall < eta and Re < 10E3:
-		p=0.968*numpy.exp(-1.076*Re**0.196)
+		p=0.968*np.exp(-1.076*Re**0.196)
 	k_2=(eta_wall/eta)**p
     
 	'''
 	Deviation form normal incidence
 	'''
-	k_4 = numpy.cos(numpy.deg2rad(alpha))
+	k_4 = np.cos(np.deg2rad(alpha))
 	k_5 = 1
 	if beta != 90:
 		k_5 = -1E-06*beta**3 + 1E-04*beta**2 + 0.0132*beta - 0.033
@@ -211,7 +211,7 @@ def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
         Hemisphere Publishing Corporation. New York, NY. 1988.
 	'''
 	
-    c = numpy.sqrt(b**2+(a/2)**2)
+    c = np.sqrt(b**2+(a/2)**2)
     if c > (a+d)/2:
         Vmax= a/(a-d)*u
     else:
@@ -243,9 +243,9 @@ def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
     if geom == 'staggered':
             ###Correction for less than 20 tube rows
         if Re <= 1000 and N < 20:
-            c2= 1-numpy.exp(-numpy.sqrt(3*N**(1/numpy.sqrt(2))))    
+            c2= 1-np.exp(-np.sqrt(3*N**(1/np.sqrt(2))))    
         if Re > 1000 and N < 20:
-            c2 = 1-numpy.exp(-N**(1/numpy.sqrt(3)))
+            c2 = 1-np.exp(-N**(1/np.sqrt(3)))
          ### Coefficients based on range of Reynolds Number
         if Re <= 40 and Re > 1.6:
             c1 = 1.04
@@ -296,7 +296,7 @@ def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
     '''
 	if geom == 'inline':
 		u0 = u*(a/(a-1))
-		D_lam= 280*numpy.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-numpy.pi)*Re)
+		D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)
 		if (N > 5 and N <= 10):
 			f_nt= (1/a**2)*(1/N-.1)
 		elif N > 10:
@@ -305,27 +305,27 @@ def dP_GG(rho,a,b,u,Re,N,geom,Return=""):
 			sys.exit('Model only valid for greater than 5 tubes')
 		f_ti = (0.22+1.2*(1-(0.94/b))**(0.6)/(a-0.85)**1.3)*10**(0.47*(b/a-1.5))+0.03*(a-1)*(b-1)
 		D_turb = f_ti/(Re**(.1*b/a))
-		D_tot = D_lam+(D_turb+f_nt)*(1-numpy.exp(-(Re+1000)/2000))
+		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+1000)/2000))
 	if geom == "staggered":
 		N = N-1
 		if  b < .5*(2*a+1)**(.5):
 			c=((a/2)**2+b**2)**(1/2)
 			u0 = u*a/(2*(c-1))
-			D_lam= 280*numpy.pi*((b**.5-0.6)**2+0.75)/((c**1.6)*(4*a*b-numpy.pi)*Re)
+			D_lam= 280*np.pi*((b**.5-0.6)**2+0.75)/((c**1.6)*(4*a*b-np.pi)*Re)
 			if (N > 5 and N <= 10):
 				f_nt = (2*(c-1)/a*(a-1)**2)*(1/N-.1)
 			elif N > 10:
 				f_nt = 0
 		else:
 			u0 = u*(a/(a-1))
-			D_lam= 280*numpy.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-numpy.pi)*Re)
+			D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)
 			if (N > 5 and N <= 10):
 				f_nt= (1/a**2)*(1/N-.1)
 			elif N > 10:
 				f_nt = 0
 		f_ts = 2.5+1.2/(a-0.85)**1.08+0.4*(b/a-1)**3-0.01*(a/b-1)**3
 		D_turb = f_ts/Re**0.25
-		D_tot = D_lam+(D_turb+f_nt)*(1-numpy.exp(-(Re+200)/1000))
+		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+200)/1000))
 	if Return == "D_tot":
 		return D_tot    
 	PressDrop = .5*D_tot*(N*rho*u0**2)
@@ -359,9 +359,9 @@ def HT_GG(rho,a,b,d,u,Re,N,geom,Pr):
 		xi = xi*(1+(Re-2.5e5)/3.25e5)
 	xi_f = .5*xi #Original total drag coefficient used to calculate drag coefficient due to friction ~.5
 	if b > 1:
-	   dh=((4*a/numpy.pi)-1)*d
+	   dh=((4*a/np.pi)-1)*d
 	else:
-	   dh=((4*a*b/numpy.pi)-1)*d
+	   dh=((4*a*b/np.pi)-1)*d
 	if geom == 'staggered':
 		c=((a/2)**2+b**2)**.5
 		L=c*d
