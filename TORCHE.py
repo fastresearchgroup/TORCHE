@@ -2,7 +2,7 @@
 Date of last edit: 2 APR 2017
 Author(s): Jonah Haefner* and Lane Carasik^
 *Texas A&M University
-*Thermal-hydraulics Group
+*Thermal-hydraulics Research Group
 
 ^Kairos Power LLC.
 ^Modeling and Simulation Group
@@ -31,30 +31,23 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 		mu = dynamic viscosity of the fluid [Pa-s]
 		a = transverse pitch to diameter ratio
 		b = longitudinal pitch to diameter ratio
-	# #v = the free stream fluid velocity in m/s 
-	# #u = dynamic viscosity in pa*s
-	# #N = number of rows in the tube bundle 
-	# #Dtube = The diameter of the tubes in the bundle in m
-	# #Will work for pitch diamters of 1.25, 1.5, or 2
-	# #Reynolds number needs to be below 150000
-
-	# Output Pressure Drop in kPa
-	
-		This needs to be better explained. It almost suggests that alpha CAN not be 0 and that beta CAN not be 90.
-	# Rotated Crossflow (k4) and Inclined Crossflow(k5)
-    # angle of attack, α, may not be 0°, i.e., the bank may 
-    # be rotated at some arbitrary angle to the flow 
-    # The angle of incidence β is not 90°, i.e. the flow is 
-    # not exactly perpendicular to the tube bank. 
-    
-    Return dP
-	
-	Warning:
-	print('Has not been added in yet: k_1 for unequal pitch-diameter ratios 
-	Can be found in graphical form in Zukauskas' High Performance Single Phase Heat Exchangers
-	Electronically found in cubic splines based of Re at: 
-	http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes'}
+		geom = tube geometry (inline or staggered) [string]
+		N = Number of tubes
+		u = free stream velocity [m/s]
+        Re = Reynolds number calculated based on velcoity at narrowest point and tube outer diameter
+	Output:
+		dP = Pressure Drop across tubes [Pa]
+	Warnings:
+		Validity:	Re < 150000
+					0.7 < Pr < 500
+					a or b = 1.25, 1.5, or 2 and both need to be equal
+	Citation: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
+        Hemisphere Publishing Corporation. New York, NY. 1988.
 	'''
+	
+	if a != b:
+		print('Has not been added in yet: k_1 for unequal pitch-diameter ratios Can be found in graphical form in Zukauskas High Performance Single Phase Heat Exchangers Electronically found in cubic splines based of Re at: http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes')
+	
 	x = (a-1)/(b-1)
 	v_max = u*(a/(a-1))
 	if geom == 'inline':
@@ -173,7 +166,11 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
     
 	'''
 	Deviation form normal incidence
+	This needs to be better explained. It almost suggests that alpha CAN not be 0 and that beta CAN not be 90. 
+	Rotated Crossflow (k4) and Inclined Crossflow(k5) angle of attack, α, may not be 0°, i.e., the bank maybe rotated at some arbitrary angle to the flow.
+	The angle of incidence β is not 90°, i.e. the flow is not exactly perpendicular to the tube bank. 
 	'''
+	
 	k_4 = np.cos(np.deg2rad(alpha))
 	k_5 = 1
 	if beta != 90:
@@ -186,7 +183,8 @@ def dP_Zu(rho,mu,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	
     #Using the relation Eu = dP/((1/2)*rho*v^2)
 	dP = Eu*((rho*v_max**2)/2) #Pressure drop per row 
-	dP_total = dP*N #pressure drop across N rows in Pa   
+	dP_total = dP*N #pressure drop across N rows in Pa
+	
 	return dP_total
 
 def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
