@@ -1,13 +1,14 @@
 """
 Date of last edit: 2 APR 2017
-Author(s): Jonah Haefner and Lane Carasik
-Texas A&M University
-Thermal-hydraulics Group
+Author(s): Jonah Haefner* and Lane Carasik^
+*Texas A&M University
+*Thermal-hydraulics Group
 
-Kairos Power LLC.
-Modeling and Simulation Group
+^Kairos Power LLC.
+^Modeling and Simulation Group
 
-TOolbox for Reactor Cross-Flow Heat Exchangers: Python Scripts for calculation of Pressure drop and Heat Transfer for crossflow tube bundles based on models found across the literature..
+TOolbox for Reactor Cross-Flow Heat Exchangers: 
+Python Scripts for calculation of Pressure drop and Heat Transfer for crossflow tube bundles based on models found across the literature.
 
 Functionality:
 	Pressure Drop Models
