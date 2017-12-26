@@ -49,7 +49,7 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	
 	x = (a-1)/(b-1)
 	v_max = u*(a/(a-1))
-	if geom == 'inline':
+	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:
         # These are valid for Reynolds numbers between 2E3 and 2E6
 		if Re > 2E3:
 			c_0 = np.array([.267, .235, .247])      #b = 1.25, 1.5, and 2
@@ -103,8 +103,8 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 			k_3 = el_2[N-1]
 		elif (Re <= 1E2):
 			print('Reynolds number needs to be greater than 100')
-		
-	if geom in ['staggered','STAGGERED']:
+			
+	if geom in ['staggered','STAGGERED','Staggered','triangular','TRIANGULAR','Triangular']:
 		if a <= (2*b**2 -.5):
 			v_max = u*(a/(a-1))
 		if a > (2*b**2 -.5):
@@ -216,7 +216,7 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
     else:
         Vmax= a/(2(b-d))*u
     
-    if geom == 'inline':  
+    if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:  
         n = 0.36
         ###Correction for less than 20 tube rows
         if N <=14:
@@ -238,7 +238,7 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
         else:
             print( 'Re out of Range')
     
-    if geom == 'staggered':
+    if geom in ['staggered','STAGGERED','Staggered','triangular','TRIANGULAR','Triangular']:
             ###Correction for less than 20 tube rows
         if Re <= 1000 and N < 20:
             c2= 1-np.exp(-np.sqrt(3*N**(1/np.sqrt(2))))    
@@ -291,7 +291,7 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 	Citation:
 		1. VDI Heat Atlas 2nd Edition p. 1094-96
     '''
-	if geom == 'inline':
+	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:
 		u0 = u*(a/(a-1))
 		D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)	# Drag coefficient due to laminar flow
 		if (N > 5 and N <= 10):
@@ -303,7 +303,7 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 		f_ti = (0.22+1.2*(1-(0.94/b))**(0.6)/(a-0.85)**1.3)*10**(0.47*(b/a-1.5))+0.03*(a-1)*(b-1) # Coefficient for geometric arrangement factor  
 		D_turb = f_ti/(Re**(.1*b/a))					# Drag coefficient due to turbulent flow
 		D_tot = D_lam+(D_turb+f_nt)*(1-np.exp(-(Re+1000)/2000))
-	if geom == "staggered":
+	if geom in ['staggered','STAGGERED','Staggered','triangular','TRIANGULAR','Triangular']:
 		N = N-1
 		if  b < .5*(2*a+1)**(.5):
 			c=((a/2)**2+b**2)**(1/2)
@@ -358,13 +358,13 @@ def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
 	   dh=((4*a/np.pi)-1)*d						# Hydraulic diameter [m]
 	else:
 	   dh=((4*a*b/np.pi)-1)*d					# Hydraulic diameter [m]
-	   
-	if geom == 'staggered':
+		
+	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:
+		L=b*d
+		
+	if geom in ['staggered','STAGGERED','Staggered','triangular','TRIANGULAR','Triangular']:
 		c=((a/2)**2+b**2)**.5
 		L=c*d
-		
-	if geom == 'inline':
-		L=b*d
 
 	xi = dP_GG(rho,a,b,geom,N,u,Re,"D_tot") 	# Drag Coefficient from Gaddis-Gnielinski Pressure Drop Model
 	
