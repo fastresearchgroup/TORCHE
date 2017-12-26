@@ -22,12 +22,13 @@ b = 1.25		# Longitudinal pitch to diameter ratio
 
 # Fluid thermo-physical properties
 rho = 1940 		# Density of the working fluid - FLiBe (kg/m^3)
+mu = 0.0056 	# Dynamics visocity of the working fluid - FLiBe (Pa-s)
 
 # Flow behavior
 vel	= 0.5		# Free-stream velocity before interacting with the tube bank (m/s)
 
 
-dP_1 = TORCHE.dP_Zu(rho,a,b,vel,.0056,10,22000,'inline')
+dP_1 = TORCHE.dP_Zu(rho,mu,a,b,vel,10,22000,'inline')
 print('The Pressure Drop calculated by Zukauskas is',dP_1/1000,'kPa')
 dP_2 = TORCHE.dP_GG(rho,a,b,vel,22000,10,'inline')
 print('The Pressure Drop calculated by Gaddis-Gnielinski is',dP_2/1000,'kPa')

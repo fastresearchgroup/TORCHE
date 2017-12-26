@@ -22,7 +22,7 @@ Functionality:
 import numpy as np
 import sys
 
-def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
+def dP_Zu(rho,mu,a,b,v,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	'''
 	#####Units####
 	#a = dimensionless transverse pitch	
@@ -53,7 +53,7 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes'}
 	'''
 	x = (a-1)/(b-1)
-	v_mean = v*(a/(a-1))
+	v_max = v*(a/(a-1))
 	if geom == 'inline':
         # These are valid for Reynolds numbers between 2E3 and 2E6 %
 		if Re > 2E3:
@@ -112,9 +112,9 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	if geom in ['staggered','STAGGERED']:
 		#Mean Velocity Calculations. Found on same website as above
 		if a <= (2*b**2 -.5):
-			v_mean = v*(a/(a-1))
+			v_max = v*(a/(a-1))
 		if a > (2*b**2 -.5):
-			v_mean = v*(a/(np.sqrt(4*b^2+a^2)-2))                     
+			v_max = v*(a/(np.sqrt(4*b^2+a^2)-2))                     
 		if Re < 1E3:
 			c_0 = [.795,.683,.343]				#b = 1.25, 1.5, and 2
 			c_1 = [.247E3,.111E3,.303E3]		#b = 1.25, 1.5, and 2
@@ -182,14 +182,14 @@ def dP_Zu(rho,a,b,v,u,N,Re,geom,eta_wall=1, eta=1,alpha=0,beta=90):
 	Eu = Eu_p*k_1*k_2*k_3*k_4*k_5
 	
     #Using the relation Eu = dP/((1/2)*rho*v^2)
-	dP = Eu*((rho*v_mean**2)/2) #Pressure drop per row 
+	dP = Eu*((rho*v_max**2)/2) #Pressure drop per row 
 	dP_total = dP*N #pressure drop across N rows in Pa   
 	return dP_total
 
 def HT_Zu(rho,a,b,d,u,N,Pr,PrS,v,geom,Re):
     '''
 	Description:
-		Calculate Nusselt number using the Zukauskas correlatioj
+		Calculate Nusselt number using the Zukauskas correlation
 	Inputs:
 		a = transverse pitch ratio
 		b = longitudinal pitch ratio
