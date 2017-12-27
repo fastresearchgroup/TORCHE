@@ -14,7 +14,8 @@ These models are simple to use pressure drop and Nusselt Number calculators base
 It is intended that future versions will include additional crossflow models in tube bundles, across helical coils, and across packed bends. 
 
 TORCHE is discussed in greater detail in the following conference proceedings:
-1. J. B. Haefner, L. B. Carasik, Y. A. Hassan, Development and Verification of MATLAB Functions for Pressure Drop Estimation in Crossflow Tube Bundles. In Transactions of the American Nuclear Society (Vol. 115(1), pp. 1535-1537). Las Vegas, Nevada
+1. J. B. Haefner, L. B. Carasik, Y. A. Hassan, "Development and Verification of MATLAB Functions for Pressure Drop Estimation in Crossflow Tube Bundles." Transactions of the American Nuclear Society (Vol. 115(1), pp. 1535-1537). Las Vegas, Nevada
+2. J. B. Haefner, L. B. Carasik, Y. A. Hassan, "TORCHE - Toolbox for Reactor Cross-Flow Heat Exchangers." Transactions of the American Nuclear Society (Vol. 116(1), pp. 1387-1390). San Francisco, California
 
 ## Pressure Drop Correlations and Models
 

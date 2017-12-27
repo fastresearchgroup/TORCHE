@@ -10,3 +10,4 @@ Need to add issues:
 9 Bias: Need to determine how the percent error was calculated and is it appropriate based off this information. – Ask Jonah what exactly he did again.
 10. Need to address calculating mean percent error (or other metric) based on log transformed values as opposed to based on non-transformed. To help prevent higher percent errors (or other metric) from heavily biasing the mean value.
 11. Provide a text file with the data for comparison.
+12. Find out what happened to the curve fits created for the first reference plus the recent student conference paper.
