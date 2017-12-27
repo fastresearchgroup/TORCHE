@@ -6,9 +6,9 @@ Need to add issues:
 5. Add test problem from example in VDI Heat Atlas 2nd Edition pg. 1082-84
 6. Look into VDI Heat Atlas 2nd Edition L1 p. 1076 for a comprehensive review of cross-flow.
 7. Add heat transfer correlation for helical coils
-8. Need to remove the specific corrections from the dP_Zu function and make them general. Allow the user to decide if they want to use it or not.
+8. Need to remove the specific corrections from the dP_Zu function and make them general. Allow the user to decide if they want to use it or not. For instance, the seiter-tate visocisty correction for both liquid (mu) and gas (Temperature).
 9. Bias: Need to determine how the percent error was calculated and is it appropriate based off this information. – Ask Jonah what exactly he did again.
 10. Need to address calculating mean percent error (or other metric) based on log transformed values as opposed to based on non-transformed. To help prevent higher percent errors (or other metric) from heavily biasing the mean value.
 11. Provide a text file with the data for comparison.
 12. Find out what happened to the curve fits created for the first reference plus the recent student conference paper.
-13. Add Prandtl number ranges for each correlations when available.
+13. Add Prandtl number ranges for each correlations when available. It doesn't look likely that we can truly apply ranges. GG doesn't provide it.

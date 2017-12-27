@@ -65,10 +65,12 @@ There is currently only two crossflow heat transfer models implemented. These ar
 
 ### Zukauskas Model
 
-NOTE: 
-- Currently only applicable for staggered geometry
-Validity: 10 < Re < 2e6
-          0.7 < Pr < 500
+NOTE:
+* Currently only applicable for staggered geometry
+* The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
+Validity: (need to recheck ranges)
+	10 < Re < 2e6
+    0.7 < Pr < 500
 		  
 References:
 1. Zhukauskas, A., R. Ulinskas., 1988, "Heat Transfer in Tube Banks in Crossflow," Hemisphere Publishing Corporation. New York, NY. 1988.
@@ -79,7 +81,9 @@ References:
 Gnielinski and Martin Model
 Based off Leveque Analogy
 
-Validity:
+NOTE: 
+* The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
+Validity: (need to recheck ranges)
 
 References:
 1. Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,” Chem. Eng. Sci., vol. 57, pp. 3217-3223.

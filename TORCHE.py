@@ -37,9 +37,10 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	Output:
 		dP_total = Pressure Drop across tubes [Pa]
 	Warnings:
-		Validity:	Re < 150000
-					0.7 < Pr < 500
-					a or b = 1.25, 1.5, or 2 and both need to be equal
+	
+	Validity:	Re < 150000
+				0.7 < Pr < 500
+				a or b = 1.25, 1.5, or 2 and both need to be equal
 	Citation: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
         Hemisphere Publishing Corporation. New York, NY. 1988.
 	'''
@@ -204,8 +205,8 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
 		Nu = Nusselt number
     Warnings:
 	    NOTE: Currently only applicable for staggered geometry 
-		Validity:	10 < Re < 2e6
-					0.7 < Pr < 500
+	Validity:	10 < Re < 2e6
+				0.7 < Pr < 500
 	Citation: Zhukauskas, A., R. Ulinskas., 1988, "Heat Transfer in Tube Banks in Crossflow,"
         Hemisphere Publishing Corporation. New York, NY. 1988.
 		Zukauskas, A., 1972, "Heat Transfer from Tubes in Cross Flow," Adv. in Heat Trans, vol. 8, Academic Press, New York.
@@ -288,7 +289,19 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 	Outputs:
 		dP_total = Pressure drop across tube bundle [Pa]
 	Warnings:
-		Ranges of validity have yet to be included in this script. Information soon to come.
+		Not limited to specific pitch-diameter ratios within limits after a high enough Reynolds numbers. 
+		The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
+	Validity:
+		Number of rows of tubes:
+			Nr >= 5
+		Reynolds number:
+			1 ≤ a ≤ 3*10e5
+		In the range Re < 10E3: 
+			For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0. 
+			For staggered tube arrangement: a x b = 1.25 x 1.0825; 1.5 x 1.299; 1.768 x 0.884.
+		In the range Re ≥ 10E3: 
+			For in-line tube arrangement: 	1.25 ≤ a ≤ 3.0; 1.2 ≤ b ≤ 3.0. 
+			For staggered tube arrangement: 1.25 ≤ a ≤ 3.0; 0.6 ≤ b ≤ 3.0; c ≥ 1.25.
 	Citation: VDI. VDI Heat Atlas. Berlin, Heidelberg: VDI-Buch-Springer, 2010. Chapter L1
 		Gaddis, E., Gnielinski, V., 1985, "Pressure drop in cross flow across tube bundles," Int. Chem. Eng., vol. 25(1), pp. 1-15
     '''
@@ -349,6 +362,8 @@ def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
         Re = Reynolds number calculated based on velcoity at narrowest point and outside tube diameter
 	Outputs:
 		Nu = Nusselt Number
+			Validity:	10 < Re < 2e6
+				0.7 < Pr < 500
 	Warnings:
 		Ranges of validity have yet to be included in this script. Information soon to come.
 	Citation: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,”
