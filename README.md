@@ -23,9 +23,16 @@ There is currently only two crossflow pressure drop models implemented. These ar
 
 ### Zukauskas Model
 
-Validity:
-- Will work for values of b = 1.25, 1.5, or 2
-- Reynolds number needs to be below 150000
+Notes:
+* These are only considered valid for the specific pitch to diameter ratios listed.
+* The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
+Validity: (need to recheck ranges)
+* Number of rows of tubes:
+Nr >= 1
+* Reynolds number:
+10 ≤ a ≤ 10e6
+For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0. 
+For staggered tube arrangement: a x b = 1.25 x ----;   1.5 x ----;  2.0 x ----.
 
 References:
 1. A. ZUKAUSKAS, R. ULINSKAS, Heat Transfer in Banks of Tubes in Crossflow, Hemisphere Publishing, United States (1988).
@@ -37,7 +44,6 @@ Notes:
 * The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
 Validity:
 * The available experimental measurements used to develop the above equations covered the following ranges: Reynolds number: 1 ≤ Re ≤ 3 /* 10E5 and number of tube rows: nR ≥  5.
-* The tube bundles used in the experimental investigations had transverse and longitudinal pitch ratios as follows: 
 * Number of rows of tubes:
 Nr >= 5
 * Reynolds number:
