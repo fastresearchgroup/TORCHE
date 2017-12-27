@@ -206,8 +206,9 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
 	    NOTE: Currently only applicable for staggered geometry 
 		Validity:	10 < Re < 2e6
 					0.7 < Pr < 500
-	Citation: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
+	Citation: Zhukauskas, A., R. Ulinskas., 1988, "Heat Transfer in Tube Banks in Crossflow,"
         Hemisphere Publishing Corporation. New York, NY. 1988.
+		Zukauskas, A., 1972, "Heat Transfer from Tubes in Cross Flow," Adv. in Heat Trans, vol. 8, Academic Press, New York.
 	'''
 	
     c = np.sqrt(b**2+(a/2)**2)
