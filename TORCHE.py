@@ -8,7 +8,7 @@ Author(s): Jonah Haefner* and Lane Carasik^
 ^Modeling and Simulation Group
 
 TOolbox for Reactor Cross-Flow Heat Exchangers: 
-Python Scripts for calculation of Pressure drop and Heat Transfer for crossflow tube bundles based on models found across the literature.
+Python Scripts for calculation of Pressure drop and Heat Transfer in crossflow tube bundles based on models found across the literature.
 
 Functionality:
 	Pressure Drop Models
@@ -288,8 +288,8 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 		dP_total = Pressure drop across tube bundle [Pa]
 	Warnings:
 		Ranges of validity have yet to be included in this script. Information soon to come.
-	Citation:
-		1. VDI Heat Atlas 2nd Edition p. 1094-96
+	Citation: VDI. VDI Heat Atlas. Berlin, Heidelberg: VDI-Buch-Springer, 2010. Chapter L1
+		Gaddis, E., Gnielinski, V., 1985, "Pressure drop in cross flow across tube bundles," Int. Chem. Eng., vol. 25(1), pp. 1-15
     '''
 	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:
 		u0 = u*(a/(a-1))
