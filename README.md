@@ -33,13 +33,13 @@ References:
 ### Gnielinski-Gaddis Model
 
 Notes:
-- Not limited to specific pitch-diameter ratios
-- Calculates the velcoity through the narrowest area
+* Not limited to specific pitch-diameter ratios within limits after a high enough Reynolds numbers. 
+* The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
 Validity:
 * The available experimental measurements used to develop the above equations covered the following ranges: Reynolds number: 1 ≤ Re ≤ 3 /* 10E5 and number of tube rows: nR ≥  5.
 * The tube bundles used in the experimental investigations had transverse and longitudinal pitch ratios as follows: 
 * Number of rows of tubes:
-Nr 
+Nr >= 5
 * Reynolds number:
 1 ≤ a ≤ 3*10e5
 * In the range Re < 10E3: 
