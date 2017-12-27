@@ -30,7 +30,7 @@ Validity: (need to recheck ranges)
 * Number of rows of tubes:
 Nr >= 1
 * Reynolds number:
-10 ≤ a ≤ 10e6
+10 ≤ Re ≤ 10e6
 For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0. 
 For staggered tube arrangement: a x b = 1.25 x ----;   1.5 x ----;  2.0 x ----.
 
@@ -69,9 +69,15 @@ NOTE:
 * Currently only applicable for staggered geometry
 * The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
 Validity: (need to recheck ranges)
-	10 < Re < 2e6
-    0.7 < Pr < 500
-		  
+* Number of rows of tubes:
+Nr >= 2
+* Reynolds number:
+100 ≤ Re ≤ 3x10e5
+For in-line tube arrangement: 	1.25 ≤ a ≤ 3.0; 1.2 ≤ b ≤ 3.0. 
+For staggered tube arrangement: 1.008 ≤ a ≤ 2.0; 1.008 ≤ b ≤ 2.0
+? 10 < Re < 2e6
+? 0.7 < Pr < 500
+ 
 References:
 1. Zhukauskas, A., R. Ulinskas., 1988, "Heat Transfer in Tube Banks in Crossflow," Hemisphere Publishing Corporation. New York, NY. 1988.
 2. Zukauskas, A., 1972, "Heat Transfer from Tubes in Cross Flow," Adv. in Heat Trans, vol. 8, Academic Press, New York.
@@ -84,6 +90,12 @@ Based off Leveque Analogy
 NOTE: 
 * The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
 Validity: (need to recheck ranges)
+* Number of rows of tubes:
+Nr >= 2
+* Reynolds number:
+100 ≤ Re ≤ 3x10e5
+For in-line tube arrangement: 	1.25 ≤ a ≤ 3.0; 1.2 ≤ b ≤ 3.0. 
+For staggered tube arrangement: 1.25 ≤ a ≤ 2.0; 1.25 ≤ b ≤ 2.0
 
 References:
 1. Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,” Chem. Eng. Sci., vol. 57, pp. 3217-3223.
