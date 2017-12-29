@@ -57,6 +57,7 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	elif Re > 10E6:
 		print('The provided Reynolds number is out of the higher bounds (10e6) of validity at',Re)
 	
+	Pr = 10 # Hardcoded for now.
 	if Pr < 0.7:
 		print('The provided Prandtl number is out of the lower bounds (0.7) of validity at')
 	elif Pr > 500:
@@ -204,7 +205,7 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	return dP_total
 
 def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
-    '''
+	'''
 	Description:
 		Calculate Nusselt number using the Zukauskas correlation
 	Inputs:
@@ -220,75 +221,84 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
 		Re = Reynolds number calculated based on velcoity at narrowest point
 	Outputs:
 		Nu = Nusselt number
-    Warnings:
-	    NOTE: Currently only applicable for staggered geometry 
-	Validity:	10 < Re < 2e6
-				0.7 < Pr < 500
+	Warnings:
+		NOTE: Currently only applicable for staggered geometry 
+	Validity:	
+		Number of rows of tubes:
+			Nr >= 2
+		Reynolds number:
+			100 ≤ Re ≤ 3x10e5
+		For in-line tube arrangement: 	1.25 ≤ a ≤ 3.0; 1.2 ≤ b ≤ 3.0. 
+		For staggered tube arrangement: 1.008 ≤ a ≤ 2.0; 1.008 ≤ b ≤ 2.0
+			10 < Re < 2e6 ???
+			0.7 < Pr < 500 ???
 	Citation: Zhukauskas, A., R. Ulinskas., 1988, "Heat Transfer in Tube Banks in Crossflow,"
-        Hemisphere Publishing Corporation. New York, NY. 1988.
+		Hemisphere Publishing Corporation. New York, NY. 1988.
 		Zukauskas, A., 1972, "Heat Transfer from Tubes in Cross Flow," Adv. in Heat Trans, vol. 8, Academic Press, New York.
 	'''
 	
-    c = np.sqrt(b**2+(a/2)**2)
-    if c > (a+d)/2:
-        Vmax= a/(a-d)*u
-    else:
-        Vmax= a/(2(b-d))*u
-    
-    if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:  
-        n = 0.36
-        ###Correction for less than 20 tube rows
-        if N <=14:
-            c2v = [.7,.8,.85,.9,.92,.94,.95,.96,.97,.97,.98,.98,.99,.99]
-            c2 = c2v[N-1]
+	if Re < 100:
+		print('')
+	c = np.sqrt(b**2+(a/2)**2)
+	if c > (a+d)/2:
+		Vmax= a/(a-d)*u
+	else:
+		Vmax= a/(2(b-d))*u
+		
+	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:  
+		n = 0.36
+		###Correction for less than 20 tube rows
+		if N <=14:
+			c2v = [.7,.8,.85,.9,.92,.94,.95,.96,.97,.97,.98,.98,.99,.99]
+			c2 = c2v[N-1]
 		### Coefficients based on range of Reynolds Number
-        if Re > 1.6 and Re <= 100:
-            c1 = 0.90
-            m =  0.40
-        elif Re > 100 and Re <= 1e3:
-            c1=.52
-            m= .5
-        elif Re > 1e3 and Re <= 2e5:
-            c1 = .27
-            m =  .63
-        elif Re > 2e5:
-            c1 = .033
-            m = .83
-        else:
-            print( 'Re out of Range')
+		if Re > 1.6 and Re <= 100:
+			c1 = 0.90
+			m =  0.40
+		elif Re > 100 and Re <= 1e3:
+			c1=.52
+			m= .5
+		elif Re > 1e3 and Re <= 2e5:
+			c1 = .27
+			m =  .63
+		elif Re > 2e5:
+			c1 = .033
+			m = .83
+		else:
+			print( 'Re out of Range')
+			
+	if geom in ['staggered','STAGGERED','Staggered','triangular','TRIANGULAR','Triangular']:
+		###Correction for less than 20 tube rows
+		if Re <= 1000 and N < 20:
+			c2= 1-np.exp(-np.sqrt(3*N**(1/np.sqrt(2))))    
+		if Re > 1000 and N < 20:
+			c2 = 1-np.exp(-N**(1/np.sqrt(3)))
+		### Coefficients based on range of Reynolds Number
+		if Re <= 40 and Re > 1.6:
+			c1 = 1.04
+			m = .4
+			n =.36
+		elif Re > 40 and Re <= 1000:
+			c1 = 0.52
+			m = 0.5
+			n = 0.36
+		elif Re > 1000 and Re <= 2e5:
+			if a/b < 2:
+				c1 = 0.35*(a/b)**0.2
+			else:
+				c1 = 0.40
+			m = 0.6
+			n = 0.36
+		elif Re > 2e5 and Re <= 2e6:
+			c1 = 0.022
+			m = 0.84
+			n = 0.36
+		else:
+			print( 'Re out of Range')
     
-    if geom in ['staggered','STAGGERED','Staggered','triangular','TRIANGULAR','Triangular']:
-            ###Correction for less than 20 tube rows
-        if Re <= 1000 and N < 20:
-            c2= 1-np.exp(-np.sqrt(3*N**(1/np.sqrt(2))))    
-        if Re > 1000 and N < 20:
-            c2 = 1-np.exp(-N**(1/np.sqrt(3)))
-         ### Coefficients based on range of Reynolds Number
-        if Re <= 40 and Re > 1.6:
-            c1 = 1.04
-            m = .4
-            n =.36
-        elif Re > 40 and Re <= 1000:
-            c1 = 0.52
-            m = 0.5
-            n = 0.36
-        elif Re > 1000 and Re <= 2e5:
-            if a/b < 2:
-                c1 = 0.35*(a/b)**0.2
-            else:
-                c1 = 0.40
-            m = 0.6
-            n = 0.36
-        elif Re > 2e5 and Re <= 2e6:
-            c1 = 0.022
-            m = 0.84
-            n = 0.36
-        else:
-            print( 'Re out of Range')
-    
-    Nu = c1*c2*(Re**m)*(Pr**n)*(Pr/Pr_w)**.25
+	Nu = c1*c2*(Re**m)*(Pr**n)*(Pr/Pr_w)**.25
 	
-    return Nu
+	return Nu
     
 def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 	'''
