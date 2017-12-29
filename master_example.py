@@ -16,21 +16,22 @@ Gaddis-Gnielinski: Nu2 = 147.31
 import TORCHE as TE
 
 # Geometric parameters
-d = 0.0254			# Outside diameter of tube or cylinder (m)
-a = 1.25 			# Transverse pitch to diameter ratio
-b = 1.25			# Longitudinal pitch to diameter ratio
-geom = 'inline' 	# Tube geometry (inline or staggered) 
-N_rows = 10 		# Number of tube rows
+d = 0.0254				# Outside diameter of tube or cylinder (m)
+a = 1.25 				# Transverse pitch to diameter ratio
+b = 1.25				# Longitudinal pitch to diameter ratio
+geom = 'inline' 		# Tube geometry (inline or staggered) 
+N_rows = 10 			# Number of tube rows
 
 # Fluid thermo-physical properties
-rho = 1940 			# Density of the working fluid - FLiBe salt (kg/m^3)
-mu = 0.0056 		# Dynamic visocity of the working fluid - FLiBe salt (Pa-s)
-Pr = 1				# Prandtl number of the working fluid
-Pr_w = 1 			# Prandtl number of the working fluid based on the wall film temperature
+rho = 1940 				# Density of the working fluid - FLiBe salt (kg/m^3)
+mu = 0.0056 			# Dynamic visocity of the working fluid - FLiBe salt (Pa-s)
+Pr = 1					# Prandtl number of the working fluid
+Pr_w = 1 				# Prandtl number of the working fluid based on the wall film temperature
 
 # Flow behavior
-vel	= 0.5			# Free-stream velocity before interacting with the tube bank (m/s)
-Re = 22000			# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
+vel	= 0.5				# Free-stream velocity before interacting with the tube bank (m/s)
+v_max = vel*(a/(a-1))	# Maximum velocity based in the minimum area between the tubes (m/s)
+Re = rho*v_max*d/mu		# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
 
 dP_1 = TE.dP_Zu(rho,a,b,geom,N_rows,vel,Re)
 print('The Pressure Drop calculated by Zukauskas is',dP_1/1000,'kPa')

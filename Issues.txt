@@ -12,3 +12,4 @@ Need to add issues:
 11. Provide a text file with the data for comparison.
 12. Find out what happened to the curve fits created for the first reference plus the recent student conference paper.
 13. Add Prandtl number ranges for each correlations when available. It doesn't look likely that we can truly apply ranges. GG doesn't provide it.
+14. Make output prettier by printing out only a few significant digits.

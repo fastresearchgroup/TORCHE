@@ -38,12 +38,29 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 		dP_total = Pressure Drop across tubes [Pa]
 	Warnings:
 	
-	Validity:	Re < 150000
-				0.7 < Pr < 500
-				a or b = 1.25, 1.5, or 2 and both need to be equal
+	Validity:	
+		Reynolds number:
+			10 ≤ Re ≤ 10e6
+		Prandtl number:
+			0.7 < Pr < 500
+		Number of rows of tubes:
+			Nr >= 1
+		For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0. 
+		For staggered tube arrangement: a x b = 1.25 x ----;   1.5 x ----;  2.0 x ----.
+
 	Citation: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
         Hemisphere Publishing Corporation. New York, NY. 1988.
 	'''
+	
+	if Re < 10:
+		print('The provided Reynolds number is out of the lower bounds (10) of validity at',Re)
+	elif Re > 10E6:
+		print('The provided Reynolds number is out of the higher bounds (10e6) of validity at',Re)
+	
+	if Pr < 0.7:
+		print('The provided Prandtl number is out of the lower bounds (0.7) of validity at')
+	elif Pr > 500:
+		print('The provided Prandtl number is out of the higher bounds (500) of validity at')
 	
 	if a != b:
 		print('Has not been added in yet: k_1 for unequal pitch-diameter ratios Can be found in graphical form in Zukauskas High Performance Single Phase Heat Exchangers Electronically found in cubic splines based of Re at: http://trace.tennessee.edu/cgi/viewcontent.cgi?article=1949&context=utk_gradthes')
@@ -292,10 +309,10 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 		Not limited to specific pitch-diameter ratios within limits after a high enough Reynolds numbers. 
 		The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
 	Validity:
+		Reynolds number:
+			1 =< a =< 3x10e5
 		Number of rows of tubes:
 			Nr >= 5
-		Reynolds number:
-			1 ≤ a ≤ 3*10e5
 		In the range Re < 10E3: 
 			For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0. 
 			For staggered tube arrangement: a x b = 1.25 x 1.0825; 1.5 x 1.299; 1.768 x 0.884.
