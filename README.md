@@ -2,13 +2,14 @@
 This is a collection of Python scripts for pressure drop and heat transfer calculations for crossflow tube bundles for both inline and staggered configurations.
 
 Author: Jonah Haefner* and Lane Carasik^
+
 Contributing and previous work done by: Julien Clayton
 
 *Texas A&M University
-*Thermal-hydraulics Research Group
+Thermal-hydraulics Research Group
 
 ^Kairos Power LLC.
-^Modeling and Simulation Group
+Modeling and Simulation Group
 
 These models are simple to use pressure drop and Nusselt Number calculators based off the work of Zukauskas et al. and Gnielinski and Gaddis. 
 It is intended that future versions will include additional crossflow models in tube bundles, across helical coils, and across packed bends. 
@@ -31,8 +32,8 @@ Validity: (need to recheck ranges)
 Nr >= 1
 * Reynolds number:
 10 ≤ Re ≤ 10e6
-For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0. 
-For staggered tube arrangement: a x b = 1.25 x ----;   1.5 x ----;  2.0 x ----.
+* For in-line tube arrangement: 	a x b = 1.25 x 1.25;   1.5 x 1.5;   2.0 x 2.0.
+* For staggered tube arrangement: a x b = 1.25 x ----;   1.5 x ----;  2.0 x ----.
 
 References:
 1. A. ZUKAUSKAS, R. ULINSKAS, Heat Transfer in Banks of Tubes in Crossflow, Hemisphere Publishing, United States (1988).
@@ -75,6 +76,7 @@ Nr >= 2
 100 ≤ Re ≤ 3x10e5
 For in-line tube arrangement: 	1.25 ≤ a ≤ 3.0; 1.2 ≤ b ≤ 3.0. 
 For staggered tube arrangement: 1.008 ≤ a ≤ 2.0; 1.008 ≤ b ≤ 2.0
+
 ? 10 < Re < 2e6
 ? 0.7 < Pr < 500
  
