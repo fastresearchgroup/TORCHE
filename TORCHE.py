@@ -1,11 +1,11 @@
 """
-Date of last edit: 2 APR 2017
+Date of last edit: August 13th, 2018
 Author(s): Jonah Haefner* and Lane Carasik^
 *Texas A&M University
 *Thermal-hydraulics Research Group
 
-^Kairos Power LLC.
-^Modeling and Simulation Group
+^Ultra Safe Nuclear Corporation
+^Advanced Systems Division
 
 TOolbox for Reactor Cross-Flow Heat Exchangers: 
 Python Scripts for calculation of Pressure drop and Heat Transfer in crossflow tube bundles based on models found across the literature.
@@ -320,7 +320,7 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 		The Reynolds number is based on the maximum velocity in the narrowest area between tubes.
 	Validity:
 		Reynolds number:
-			1 =< a =< 3x10e5
+			1 =< Re =< 3x10e5
 		Number of rows of tubes:
 			Nr >= 5
 		In the range Re < 10E3: 
