@@ -1,15 +1,15 @@
 # TORCHE
 This is a collection of Python scripts for pressure drop and heat transfer calculations for crossflow tube bundles for both inline and staggered configurations.
 
-Author: Jonah Haefner* and Lane Carasik^
+Author(s): Jonah Haefner* and Lane Carasik^
 
 Contributing and previous work done by: Julien Clayton
 
 *Texas A&M University
 Thermal-hydraulics Research Group
 
-^Kairos Power LLC.
-Modeling and Simulation Group
+^Ultra Safe Nuclear Corporation
+Advanced Projects Division
 
 These models are simple to use pressure drop and Nusselt Number calculators based off the work of Zukauskas et al. and Gnielinski and Gaddis. 
 It is intended that future versions will include additional crossflow models in tube bundles, across helical coils, and across packed bends. 
