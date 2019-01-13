@@ -33,11 +33,17 @@ vel	= 0.5				# Free-stream velocity before interacting with the tube bank (m/s)
 v_max = vel*(a/(a-1))	# Maximum velocity based in the minimum area between the tubes (m/s)
 Re = rho*v_max*d/mu		# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
 
+# Expected Results
+dP_Zu_Ex = 21.94 		# Expected Zukauskas results for Pressure drop (kPa)
+dP_GG_Ex = 25.67		# Expected Gaddis-Gnielinski results for Pressure drop (kPa)
+Nu_Zu_Ex = 142.52		# Expected Zukauskas results for Nusselt Number
+Nu_GG_Ex = 147.31		# Expected Gaddis-Gnielinski results for Nusselt Number
+
 dP_1 = TE.dP_Zu(rho,a,b,geom,N_rows,vel,Re)
-print('The Pressure Drop calculated by Zukauskas is',dP_1/1000,'kPa')
+print('The Pressure Drop calculated by Zukauskas is',round(dP_1/1000,2),'kPa')
 dP_2 = TE.dP_GG(rho,a,b,geom,N_rows,vel,Re,Return="")
-print('The Pressure Drop calculated by Gaddis-Gnielinski is',dP_2/1000,'kPa')
+print('The Pressure Drop calculated by Gaddis-Gnielinski is',round(dP_2/1000,2),'kPa')
 Nu_1 = TE.HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N_rows,vel,Re)
-print('The Nusselt Number calculated by Zukauskas is', Nu_1)
+print('The Nusselt Number calculated by Zukauskas is', round(Nu_1,2))
 Nu_2 = TE.HT_GG(rho,Pr,a,b,d,geom,N_rows,vel,Re)
-print('The Nusselt Number calculated by Gnielinski is', Nu_2)
+print('The Nusselt Number calculated by Gnielinski is', round(Nu_2,2))
