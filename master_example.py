@@ -33,6 +33,12 @@ vel	= 0.5				# Free-stream velocity before interacting with the tube bank (m/s)
 v_max = vel*(a/(a-1))	# Maximum velocity based in the minimum area between the tubes (m/s)
 Re = rho*v_max*d/mu		# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
 
+# Expected Results
+dP_Zu_Ex = 21.94 		# Expected Zukauskas results for Pressure drop (kPa)
+dP_GG_Ex = 25.67		# Expected Gaddis-Gnielinski results for Pressure drop (kPa)
+Nu_Zu_Ex = 142.52		# Expected Zukauskas results for Nusselt Number
+Nu_GG_Ex = 147.31		# Expected Gaddis-Gnielinski results for Nusselt Number
+
 dP_1 = TE.dP_Zu(rho,a,b,geom,N_rows,vel,Re)
 print('The Pressure Drop calculated by Zukauskas is',round(dP_1/1000,2),'kPa')
 dP_2 = TE.dP_GG(rho,a,b,geom,N_rows,vel,Re,Return="")
