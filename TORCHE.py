@@ -30,17 +30,14 @@ def Re_Calc():
 			v_max = u*(a/(a-1))
 		elif a > (2*b**2 -.5):
 			v_max = u*(a/(np.sqrt(4*b^2+a^2)-2))
-			
+
 	# In-Line
 	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:
-
-	c = np.sqrt(b**2+(a/2)**2)
-	if c > (a+d)/2:
-		Vmax= a/(a-d)*u
-	else:
-		Vmax= a/(2(b-d))*u
-
-	v_max = u*(a/(a-1))
+		c = np.sqrt(b**2+(a/2)**2)
+		if c > (a+d)/2:
+			v_max= u*a/(a-d)
+		else:
+			v_max= u*a/(2(b-d))
 
 	return Re
 
