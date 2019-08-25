@@ -1,5 +1,5 @@
 """
-Date of last edit: August 13th, 2018
+Date of last edit: August 25th, 2019
 Author(s): Jonah Haefner* and Lane Carasik^
 *Texas A&M University
 *Thermal-hydraulics Research Group
@@ -23,7 +23,7 @@ import numpy as np
 import sys
 
 class Torche:
-    __init__(this, rho, a, b, d, geom, Pr, Pr_w, N_rows, vel, Re):
+    def __init__(this, rho, a, b, d, geom, Pr, Pr_w, N_rows, vel, Re):
         this.rho = rho
         this.trans_ptod = a
         this.long_ptod = b
@@ -467,7 +467,12 @@ def HT_GG(values): # params were: (rho,Pr,a,b,d,geom,N,u,Re)
 		c=((a/2)**2+b**2)**.5
 		L=c*d
 
-	xi = dP_GG(rho,a,b,geom,N,u,Re,"D_tot") 	# Drag Coefficient from Gaddis-Gnielinski Pressure Drop Model
+	"""-------------------------------------------------------------------------
+	***Note:
+		the following value is incorrect; the dP_GG function needs to return the
+		D_tot value for this particular function
+ 	-------------------------------------------------------------------------"""
+	xi = dP_GG(values) 	# Drag Coefficient from Gaddis-Gnielinski Pressure Drop Model
 
 	if Re > 2.5e5:
 		xi = xi*(1+(Re-2.5e5)/3.25e5)			# Correction made Holger Martin for use in Heat Transfer calculation
