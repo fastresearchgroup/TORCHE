@@ -36,7 +36,7 @@ class Torche:
         this.reynolds_no = Re
 
 
-def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
+def dP_Zu(values):	# params were: (rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90)
 	'''
 	Description:
 		Calculating the presssure drop using the Zhukauskas correlation
@@ -65,6 +65,19 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 	Citation: Zhukauskas, A., R. Ulinskas. Heat Transfer in Tube Banks in Crossflow.
         Hemisphere Publishing Corporation. New York, NY. 1988.
 	'''
+	rho = values.rho
+	a = values.trans_ptod
+	b = values.long_ptod
+	geom = values.geometry
+	N = values.no_rows
+	u = values.velocity
+	Re = values.reynolds_no
+
+	# Hard-coded
+	eta_wall = 1
+	eta = 1
+	alpha = 0
+	beta = 90
 
 	if Re < 10:
 		print('The provided Reynolds number is out of the lower bounds (10) of validity at',Re)
@@ -218,7 +231,7 @@ def dP_Zu(rho,a,b,geom,N,u,Re,eta_wall=1, eta=1,alpha=0,beta=90):
 
 	return dP_total
 
-def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
+def HT_Zu(values): # params were: (rho,Pr,Pr_w,a,b,d,geom,N,u,Re)
 	'''
 	Description:
 		Calculate Nusselt number using the Zukauskas correlation
@@ -250,6 +263,17 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
 		Hemisphere Publishing Corporation. New York, NY. 1988.
 		Zukauskas, A., 1972, "Heat Transfer from Tubes in Cross Flow," Adv. in Heat Trans, vol. 8, Academic Press, New York.
 	'''
+
+	rho = values.rho
+	Pr = values.prandlt_no
+	Pr_w = values.prandlt_no_w
+	a = values.trans_ptod
+	b = values.long_ptod
+	d = values.diameter
+	geom = values.geometry
+	N = values.no_rows
+	u = values.velocity
+	Re = values.reynolds_no
 
 	if Re < 100:
 		print('')
@@ -314,7 +338,7 @@ def HT_Zu(rho,Pr,Pr_w,a,b,d,geom,N,u,Re):
 
 	return Nu
 
-def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
+def dP_GG(values): # params were: (rho,a,b,geom,N,u,Re,Return="")
 	'''
 	Description:
 		Calculate the pressure drop or total drag coefficient through a tube bundle using the Gaddis-Gnielinski correlation
@@ -346,6 +370,16 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 	Citation: VDI. VDI Heat Atlas. Berlin, Heidelberg: VDI-Buch-Springer, 2010. Chapter L1
 		Gaddis, E., Gnielinski, V., 1985, "Pressure drop in cross flow across tube bundles," Int. Chem. Eng., vol. 25(1), pp. 1-15
     '''
+
+	rho = values.rho
+	a = values.trans_ptod
+	b = values.long_ptod
+	geom = values.geometry
+	N = values.no_rows
+	u = values.velocity
+	Re = values.reynolds_no
+	Return = ""
+
 	if geom in ['inline','INLINE','Inline','square','SQUARE','Square']:
 		u0 = u*(a/(a-1))
 		D_lam= 280*np.pi*((b**(.5)-0.6)**2+0.75)/(a**(1.6)*(4*a*b-np.pi)*Re)	# Drag coefficient due to laminar flow
@@ -387,7 +421,7 @@ def dP_GG(rho,a,b,geom,N,u,Re,Return=""):
 
 	return dP_total
 
-def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
+def HT_GG(values): # params were: (rho,Pr,a,b,d,geom,N,u,Re)
 	'''
 	Description:
 		Calculating the nusselt number using the Gnielinski and Martin Model based on the Leveque Analogy
@@ -410,6 +444,16 @@ def HT_GG(rho,Pr,a,b,d,geom,N,u,Re):
 	Citation: Martin, H., 2002, “The Generalized Lévêque Equation and its practical use for the prediction of heat and mass transfer rates from pressure drop,”
 		Chem. Eng. Sci., vol. 57, pp. 3217-3223.
     '''
+
+	rho = values.rho
+	Pr = values.prandlt_no
+	a = values.trans_ptod
+	b = values.long_ptod
+	d = values.diameter
+	geom = values.geometry
+	N = values.no_rows
+	u = values.velocity
+	Re = values.reynolds_no
 
 	if b > 1:
 	   dh=((4*a/np.pi)-1)*d						# Hydraulic diameter [m]
