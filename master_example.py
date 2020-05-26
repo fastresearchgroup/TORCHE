@@ -41,8 +41,6 @@ vel	= 0.5				# Free-stream velocity before interacting with the tube bank (m/s)
 v_max = vel*(a/(a-1))	# Maximum velocity based in the minimum area between the tubes (m/s)
 Re = rho*v_max*d/mu		# Reynolds number of the flow based on the maximium velocity in the minimum area between tubes
 
-print(Re)
-
 # Expected Results
 dP_Zu_Ex = 21.94 		# Expected Zukauskas results for Pressure drop (kPa)
 dP_GG_Ex = 25.67		# Expected Gaddis-Gnielinski results for Pressure drop (kPa)
