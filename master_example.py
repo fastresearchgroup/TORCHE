@@ -22,11 +22,19 @@ b = 1.25				# Longitudinal pitch to diameter ratio
 geom = 'inline' 		# Tube geometry (inline or staggered) 
 N_rows = 10 			# Number of tube rows
 
+'''
 # Fluid thermo-physical properties
 rho = 1940 				# Density of the working fluid - FLiBe salt (kg/m^3)
 mu = 0.0056 			# Dynamic visocity of the working fluid - FLiBe salt (Pa-s)
 Pr = 1					# Prandtl number of the working fluid
 Pr_w = 1 				# Prandtl number of the working fluid based on the wall film temperature
+'''
+
+# Fluid thermo-physical properties - H2O
+rho = 998.6 			# Density of the working fluid - water at 20 C (kg/m^3)
+mu = 0.00100124			# Dynamic visocity of the working fluid - water 20 C (Pa-s)
+Pr = 6.99				# Prandtl number of the working fluid
+Pr_w = 6.99				# Prandtl number of the working fluid based on the wall film temperature
 
 # Flow behavior
 vel	= 0.5				# Free-stream velocity before interacting with the tube bank (m/s)
