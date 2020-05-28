@@ -4,8 +4,8 @@ Author(s): Jonah Haefner* and Lane Carasik^
 *Texas A&M University
 *Thermal-hydraulics Research Group
 
-^Ultra Safe Nuclear Corporation
-^Advanced Systems Division
+^Virginia Commonwealth University
+^Fluids in Advanced Systems and Technology (FAST) Research Group
 
 TOolbox for Reactor Cross-Flow Heat Exchangers: 
 Python Scripts for calculation of Pressure drop and Heat Transfer in crossflow tube bundles based on models found across the literature.
