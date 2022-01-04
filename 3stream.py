@@ -39,3 +39,11 @@ V_flow_3 = 3 # Flow rate (Stream 3)
 # Call Nusselt number calculation
 # Call HTC Calculation
 
+#----------------------------------------------------------------------------------#
+# Boundary Value Problem Calculation
+
+#----------------------------------------------------------------------------------#
+# Output Formatted Text
+
+#----------------------------------------------------------------------------------#
+# Output relevant plots
