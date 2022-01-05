@@ -9,6 +9,7 @@ Purpose: Three-stream heat exchanger temperature distribution (1-D)
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+from iapws import IAPWS95
 
 #----------------------------------------------------------------------------------#
 # Define functions needed
@@ -24,6 +25,21 @@ def Reynolds(rho,vel,D_h,mu):
 	Re = rho*vel*D_h/mu
 	
 	return Re
+
+def f_Blasius(Re):
+    # Friction factor for calculating smooth pipe 
+    # friction factor
+    f = 0.3164*Re**(-0.25)
+    
+    return f
+
+def Nu_DB(Re,Pr):
+    # Nusselt number correlation (Dittus Boelter)
+    # for smooth pipe flow
+    # cooling so n = 0.3 or n = 0.4 for heating
+    Nu = 0.023*(Re**0.8)*(Pr**0.4)
+
+    return Nu   
 
 #----------------------------------------------------------------------------------#
 # Define or import material properties
@@ -47,11 +63,26 @@ def thermophys_FLiBe(T):
  
 def thermophys_H20(T):
     # Where T is in Kelvin
+    # Need to add the ability to change temperature and pressure
+    # Likely need to use the IAPWS to make this easy.
     rho = 713.8
     Cp = 5750
     k = 0.548
     mu = 0.086e-3
     return rho,Cp,mu,k
+
+def thermophys_H20_iapws95(T,P):
+
+    T_inK = T+273.15 # Temperature in Kelvin
+    P_inMPa = P/1e6  # Pressure in MPa
+
+    H20 = IAPWS95(T=T_inK,P=P_inMPa) # Thermophysical (Stream 1)
+    rho = H20.rho
+    cp = H20.cp
+    mu = H20.mu
+    k = H20.k
+
+    return rho, cp, mu, k    
 
 #----------------------------------------------------------------------------------#
 # Options/Inputs
@@ -64,6 +95,10 @@ nodes = 100  # Number of nodes for 1-D calculation
 T_1in = 30 # Inlet Temperature (Stream 1) - C
 T_2in = 50 # Inlet Temperature (Stream 2) - C
 T_3in = 80 # Inlet Temperature (Stream 3) - C
+# Pressures
+P_1in = 101325 # Inlet Pressure (Stream 1) - Pa
+P_2in = 101325 # Inlet Pressure (Stream 2) - Pa
+P_3in = 101325 # Inlet Pressure (Stream 3) - Pa
 # Flow rates
 V_flow_1 = 1 # Flow rate (Stream 1) - m3/sec
 V_flow_2 = 5 # Flow rate (Stream 2) - m3/sec
@@ -72,10 +107,13 @@ V_flow_3 = 3 # Flow rate (Stream 3) - m3/sec
 # Call Fluid properties
 '''
 Currently assuming liquids and not gases.
+It currently calls the IAPWS95 database using the IAPWS python module. I created a
+wrapper function to reduce overhead for the user. It should be portable enough for
+future users if other fluid properties are needed.
 '''
-[rho_1,cp_1,mu_1,k_1] = thermophys_H20(T_1in+273.15) # Thermophysical (Stream 1)
-[rho_2,cp_2,mu_2,k_2] = thermophys_H20(T_2in+273.15) # Thermophysical (Stream 2)
-[rho_3,cp_3,mu_3,k_3] = thermophys_H20(T_3in+273.15) # Thermophysical (Stream 3)
+[rho_1,cp_1,mu_1,k_1] = thermophys_H20_iapws95(T_1in,P_1in) # Thermophysical (Stream 1)
+[rho_2,cp_2,mu_2,k_2] = thermophys_H20_iapws95(T_2in,P_2in) # Thermophysical (Stream 2)
+[rho_3,cp_3,mu_3,k_3] = thermophys_H20_iapws95(T_3in,P_3in) # Thermophysical (Stream 3)
 
 #----------------------------------------------------------------------------------#
 # Basic Global Calulations
@@ -102,8 +140,10 @@ A_3 = .025 # Flow area of stream 3
 # Call Prandtl number calcation
 Pr_1 = Prandtl(cp_1,mu_1,k_1) # Prandtl (Stream 1)
 Pr_2 = Prandtl(cp_2,mu_2,k_2) # Prandtl (Stream 2)
-Pr_2 = Prandtl(cp_3,mu_3,k_3) # Prandtl (Stream 3)
+Pr_3 = Prandtl(cp_3,mu_3,k_3) # Prandtl (Stream 3)
+
 # Call Nusselt number calculation
+
 # Call HTC Calculation
 
 #----------------------------------------------------------------------------------#
@@ -111,6 +151,10 @@ Pr_2 = Prandtl(cp_3,mu_3,k_3) # Prandtl (Stream 3)
 
 #----------------------------------------------------------------------------------#
 # Output Formatted Text
+
+print(Pr_1)
+print(Pr_2)
+print(Pr_3)
 
 #----------------------------------------------------------------------------------#
 # Output relevant plots
