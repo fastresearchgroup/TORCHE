@@ -71,6 +71,33 @@ def thermophys_H20(T):
     mu = 0.086e-3
     return rho,Cp,mu,k
 
+def NaNO2_60wt_KNO2_40wt(T):
+	'''
+	Temp range: 300-600 C (573.16-873.16 K)
+	'''
+	rho = 1000*(2.0772-0.0006*T) # Temp in C - results in kg/m3
+	mu = 0.001*5.103*np.exp(-2.575*(10**3)*(T+273.15)**(-1)+1.305*(10**6)*((T+273.15)**(-2))) # Temp in K - results in Pa-s
+	k = 0.459 + T*0.0003 # Temp in C - results in W/m-K
+	Cp = 1570 # result in J/kg-K
+
+	return rho,mu,k,Cp
+
+def NaNO3_NaNO2_KNO3(T):
+	'''
+	HITEC salt
+
+	Temp range: 174.84-499.84 C (448-773 K)
+
+	Ref: Serrano-Lopez 2013 - Molten salts database for energy applications
+	Density SAM-NREL 2012 (0.07–0.49–0.44)
+	'''
+	rho = 2279.799-0.7324*(T+273.15) # Temp in K - results in kg/m3
+	mu = np.exp(-4.343 - 2.0143*(np.log(T + 273.15-273) - 5.011)) # Temp in K - results in Pa-s
+	k = 0.45 # results in W/m-K
+	Cp = 1560 # result in J/kg-K
+
+	return rho,mu,k,Cp
+
 def thermophys_H20_iapws95(T,P):
 
     T_inK = T+273.15 # Temperature in Kelvin
