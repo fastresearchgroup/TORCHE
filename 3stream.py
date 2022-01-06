@@ -206,10 +206,14 @@ Nu_1 = Nu_DB(Re_1,Pr_1,horc='h') # Nu Number (Stream 1)
 Nu_2 = Nu_DB(Re_2,Pr_2,horc='h') # Nu Number (Stream 2)
 Nu_3 = Nu_DB(Re_3,Pr_3,horc='c') # Nu Number (Stream 3)
 
-# Call HTC Calculation
+# Call Heat Transfer Coefficient Calculation
 HTC_1 = Nu_1*k_1/Dh_1	# HTC (Stream 1) - W/m2-K
 HTC_2 = Nu_2*k_2/Dh_2	# HTC (Stream 2) - W/m2-K
 HTC_3 = Nu_3*k_3/Dh_3	# HTC (Stream 3) - W/m2-K
+
+# Call Overall Heat Transfer Coefficient Calculation
+# Call NTU calculation
+# Call Heat Capacity Stream Ratio Calculation
 
 #----------------------------------------------------------------------------------#
 # Boundary Value Problem Calculation
