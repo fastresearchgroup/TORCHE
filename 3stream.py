@@ -154,9 +154,10 @@ V_flow_3 = 3 # Flow rate (Stream 3) - m3/sec
 # Call Fluid properties
 '''
 Currently assuming liquids and not gases.
-It currently calls the IAPWS95 database using the IAPWS python module. I created a
-wrapper function to reduce overhead for the user. It should be portable enough for
-future users if other fluid properties are needed.
+It currently calls the IAPWS95 database using the IAPWS python module. 
+I created a wrapper function to reduce overhead for the user. 
+It should be portable enough for future users if other fluid properties 
+are needed.
 '''
 [rho_1,cp_1,mu_1,k_1] = thermophys_H20_iapws95(T_1in,P_1in) # Thermophysical (Stream 1)
 [rho_2,cp_2,mu_2,k_2] = thermophys_H20_iapws95(T_2in,P_2in) # Thermophysical (Stream 2)
@@ -165,6 +166,21 @@ future users if other fluid properties are needed.
 #----------------------------------------------------------------------------------#
 # Basic Global Calulations
 
+# Call area calculation
+A_1 = np.pi*(D_1in/2)**2 					   # Flow area of stream 1 - m2
+A_2 = np.pi*(D_2in/2)**2 - np.pi*(D_1out/2)**2 # Flow area of stream 2 - m2
+A_3 = np.pi*(D_3in/2)**2 - np.pi*(D_2out/2)**2 # Flow area of stream 3 - m2
+
+# Call Hydraulic diameter calculation
+Dh_1 = D_1in 			# Hydraulic Diameter (Stream 1) - m
+Dh_2 = D_2in - D_1out	# Hydraulic Diameter (Stream 2) - m
+Dh_3 = D_3in - D_2out	# Hydraulic Diameter (Stream 3) - m
+
+# Call velocity calculation (velocity = flow rate/flow area)
+vel_1 = V_flow_1/A_1 # Velocity (Stream 1) - m/sec
+vel_2 = V_flow_2/A_2 # Velocity (Stream 2) - m/sec
+vel_3 = V_flow_3/A_3 # Velocity (Stream 3) - m/sec
+
 # Call mass flow rate calculation (mdot = rho*area*vel = rho*vol_flow)
 mdot_1 = rho_1*V_flow_1 # Mass Flow Rate of Stream 1 - kg/sec
 mdot_2 = rho_2*V_flow_2 # Mass Flow Rate of Stream 2 - kg/sec
@@ -172,20 +188,13 @@ mdot_3 = rho_3*V_flow_3 # Mass Flow Rate of Stream 3 - kg/sec
 
 # Call heat capacity rates (C = mdot*cp)
 C_1 = mdot_1*cp_1 # Heat Capacity of Stream 1
-C_2 = mdot_2*cp_2 # Heat Capacity of Stream 1
-C_3 = mdot_3*cp_3 # Heat Capacity of Stream 1
-
-# Call area calculation
-A_1 = .010 # Flow area of stream 1
-A_2 = .015 # Flow area of stream 2
-A_3 = .025 # Flow area of stream 3
-
-# Call Hydraulic diameter calculation
-Dh_1 = D_1in 			# m - Hydraulic Diameter (Stream 1)
-Dh_2 = D_2in - D_1out	# m - Hydraulic Diameter (Stream 2)
-Dh_3 = D_3in - D_2out	# m - Hydraulic Diameter (Stream 3)
+C_2 = mdot_2*cp_2 # Heat Capacity of Stream 2
+C_3 = mdot_3*cp_3 # Heat Capacity of Stream 3
 
 # Call Reynolds number calculation
+Re_1 = Reynolds(rho_1,vel_1,Dh_1,mu_1) # Re Number (Stream 1)
+Re_2 = Reynolds(rho_2,vel_2,Dh_2,mu_2) # Re Number (Stream 2)
+Re_3 = Reynolds(rho_3,vel_3,Dh_3,mu_3) # Re Number (Stream 3)
 
 # Call Prandtl number calcation
 Pr_1 = Prandtl(cp_1,mu_1,k_1) # Prandtl (Stream 1)
