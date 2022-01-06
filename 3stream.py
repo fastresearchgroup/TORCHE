@@ -33,11 +33,16 @@ def f_Blasius(Re):
     
     return f
 
-def Nu_DB(Re,Pr):
+def Nu_DB(Re,Pr,horc):
     # Nusselt number correlation (Dittus Boelter)
     # for smooth pipe flow
     # cooling so n = 0.3 or n = 0.4 for heating
-    Nu = 0.023*(Re**0.8)*(Pr**0.4)
+    if horc == 'h':
+    	n = 0.4
+    elif horc == 'c':
+    	n = 0.3
+
+    Nu = 0.023*(Re**0.8)*(Pr**n)
 
     return Nu   
 
@@ -113,11 +118,26 @@ def thermophys_H20_iapws95(T,P):
 
 #----------------------------------------------------------------------------------#
 # Options/Inputs
+'''
+This assumes a three stream concentenric heat exchanger 
+Stream 1 - Inner most tube (D_h = D_1in)
+Stream 2 - Intermediate Annulus (D_h = D_2in - D_1out)
+Stream 3 - Outer Annulus (D_h = D_3in - D_2out)
+'''
 
 # Solver Settings
 nodes = 100  # Number of nodes for 1-D calculation
 
 # Input Conditions
+# Geometry of Heat Exchanger
+D_1in = 10/100 # m - Inner Diameter (Tube 1)
+D_1out = 11/100 # m - Outer Diamter (Tube 1)
+D_2in = 13/100 # m - Inner Diamter (Tube 2)
+D_2out = 14/100 # m - Outer Diamter (Tube 2)
+D_3in = 16/100 # m - Inner Diameter (Tube 3)
+D_3out = 19/100 # m - Outer Diameter (Tube 3)
+
+
 # Temperatures
 T_1in = 30 # Inlet Temperature (Stream 1) - C
 T_2in = 50 # Inlet Temperature (Stream 2) - C
@@ -161,6 +181,9 @@ A_2 = .015 # Flow area of stream 2
 A_3 = .025 # Flow area of stream 3
 
 # Call Hydraulic diameter calculation
+Dh_1 = D_1in 			# m - Hydraulic Diameter (Stream 1)
+Dh_2 = D_2in - D_1out	# m - Hydraulic Diameter (Stream 2)
+Dh_3 = D_3in - D_2out	# m - Hydraulic Diameter (Stream 3)
 
 # Call Reynolds number calculation
 
