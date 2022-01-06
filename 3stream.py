@@ -110,7 +110,7 @@ def thermophys_H20_iapws95(T,P):
 
     H20 = IAPWS95(T=T_inK,P=P_inMPa) # Thermophysical (Stream 1)
     rho = H20.rho
-    cp = H20.cp
+    cp = H20.cp*1000
     mu = H20.mu
     k = H20.k
 
@@ -147,9 +147,9 @@ P_1in = 101325 # Inlet Pressure (Stream 1) - Pa
 P_2in = 101325 # Inlet Pressure (Stream 2) - Pa
 P_3in = 101325 # Inlet Pressure (Stream 3) - Pa
 # Flow rates
-V_flow_1 = 1 # Flow rate (Stream 1) - m3/sec
-V_flow_2 = 5 # Flow rate (Stream 2) - m3/sec
-V_flow_3 = 3 # Flow rate (Stream 3) - m3/sec
+V_flow_1 = 0.00454609 # Flow rate (Stream 1) - m3/sec
+V_flow_2 = 0.0227304  # Flow rate (Stream 2) - m3/sec
+V_flow_3 = 0.0136383  # Flow rate (Stream 3) - m3/sec
 
 # Call Fluid properties
 '''
@@ -202,8 +202,14 @@ Pr_2 = Prandtl(cp_2,mu_2,k_2) # Prandtl (Stream 2)
 Pr_3 = Prandtl(cp_3,mu_3,k_3) # Prandtl (Stream 3)
 
 # Call Nusselt number calculation
+Nu_1 = Nu_DB(Re_1,Pr_1,horc='h') # Nu Number (Stream 1)
+Nu_2 = Nu_DB(Re_2,Pr_2,horc='h') # Nu Number (Stream 2)
+Nu_3 = Nu_DB(Re_3,Pr_3,horc='c') # Nu Number (Stream 3)
 
 # Call HTC Calculation
+HTC_1 = Nu_1*k_1/Dh_1	# HTC (Stream 1) - W/m2-K
+HTC_2 = Nu_2*k_2/Dh_2	# HTC (Stream 2) - W/m2-K
+HTC_3 = Nu_3*k_3/Dh_3	# HTC (Stream 3) - W/m2-K
 
 #----------------------------------------------------------------------------------#
 # Boundary Value Problem Calculation
@@ -214,6 +220,15 @@ Pr_3 = Prandtl(cp_3,mu_3,k_3) # Prandtl (Stream 3)
 print(Pr_1)
 print(Pr_2)
 print(Pr_3)
+print(Re_1)
+print(Re_2)
+print(Re_3)
+print(Nu_1)
+print(Nu_2)
+print(Nu_3)
+print(HTC_1)
+print(HTC_2)
+print(HTC_3)
 
 #----------------------------------------------------------------------------------#
 # Output relevant plots
