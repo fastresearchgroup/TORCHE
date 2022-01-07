@@ -224,21 +224,40 @@ HTC_3 = Nu_3*k_3/Dh_3	# HTC (Stream 3) - W/m2-K
 # Stream 1 to 2
 UA_12 = 1/(1/(HTC_2*A_2)+1/(2*np.pi*kw_12*L_HX)*np.log(D_1out/D_1in)+1/(HTC_1*A_1))
 # Stream 2 to 3
-UA_23 = 1/(1/(HTC_3*A_3)+1/(2*np.pi*kw_23*L_HX)*np.log(D_2out/D_2in)+1/(HTC_2*A_2))
+UA_32 = 1/(1/(HTC_3*A_3)+1/(2*np.pi*kw_23*L_HX)*np.log(D_2out/D_2in)+1/(HTC_2*A_2))
 
 # Call NTU calculation
 NTU_1 = UA_12/C_1
 
 # Call Heat Capacity Stream Ratio Calculation
+Cs_12 = C_1/C_2 # Heat capacity ratio (1->2)
+Cs_32 = C_3/C_2 # Heat capacity ratio (3->2)
+
+# Call Conductance Ratio calculation
+R_star = UA_32/UA_12
+
+# Call inlet temperature ratio (Dimensionless)
+theta_3in = (T_3in-T_1in)/(T_2in-T_1in) 
 
 #----------------------------------------------------------------------------------#
 # Boundary Value Problem Calculation
 
 # See notes from Selic three stream heat exchanger design
-# Calculate the non-dimensional parameters, set up the three equations 
-# three unknown solver 
+
+def fun(x,y):
+	return np.vstack((NTU_1*(y[1]-y[0]),
+		i_2*NTU_1*Cs_12*(y[0]-y[1])+i_2*NTU_1*R_star*Cs_12*(y[2]-y[1]),
+		i_3*(Cs_12/Cs_32)*R_star*NTU_1*(y[1]-y[2])
+	))
+
+#call residuals
 # Solve and make sure it can handle different directions of the 
 # parallel/counter flow heat exchanger
+
+#Call bvp solver
+
+# three unknown solver 
+
 
 #----------------------------------------------------------------------------------#
 # Output Formatted Text
