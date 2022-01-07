@@ -136,7 +136,7 @@ D_2in = 13/100 # m - Inner Diamter (Tube 2)
 D_2out = 14/100 # m - Outer Diamter (Tube 2)
 D_3in = 16/100 # m - Inner Diameter (Tube 3)
 D_3out = 19/100 # m - Outer Diameter (Tube 3)
-
+L_HX = 200/100 # m - Length (HX)
 
 # Temperatures
 T_1in = 30 # Inlet Temperature (Stream 1) - C
@@ -162,6 +162,15 @@ are needed.
 [rho_1,cp_1,mu_1,k_1] = thermophys_H20_iapws95(T_1in,P_1in) # Thermophysical (Stream 1)
 [rho_2,cp_2,mu_2,k_2] = thermophys_H20_iapws95(T_2in,P_2in) # Thermophysical (Stream 2)
 [rho_3,cp_3,mu_3,k_3] = thermophys_H20_iapws95(T_3in,P_3in) # Thermophysical (Stream 3)
+
+# Call heat exchanger tube wall properties
+'''
+This just assumes Stainless Steel 316L annealed sheets
+http://www.matweb.com/search/datasheet_print.aspx?matguid=1336be6d0c594b55afb5ca8bf1f3e042.
+Future work would be to make this more general.
+'''
+kw_12 = 15.9 # Thermal conductivity of wall (Stream 1-2) - W/m-K
+kw_23 = 15.9 # Thermal conductivity of wall (Stream 1-2) - W/m-K
 
 #----------------------------------------------------------------------------------#
 # Basic Global Calulations
@@ -212,11 +221,24 @@ HTC_2 = Nu_2*k_2/Dh_2	# HTC (Stream 2) - W/m2-K
 HTC_3 = Nu_3*k_3/Dh_3	# HTC (Stream 3) - W/m2-K
 
 # Call Overall Heat Transfer Coefficient Calculation
+# Stream 1 to 2
+UA_12 = 1/(1/(HTC_2*A_2)+1/(2*np.pi*kw_12*L_HX)*np.log(D_1out/D_1in)+1/(HTC_1*A_1))
+# Stream 2 to 3
+UA_23 = 1/(1/(HTC_3*A_3)+1/(2*np.pi*kw_23*L_HX)*np.log(D_2out/D_2in)+1/(HTC_2*A_2))
+
 # Call NTU calculation
+NTU_1 = UA_12/C_1
+
 # Call Heat Capacity Stream Ratio Calculation
 
 #----------------------------------------------------------------------------------#
 # Boundary Value Problem Calculation
+
+# See notes from Selic three stream heat exchanger design
+# Calculate the non-dimensional parameters, set up the three equations 
+# three unknown solver 
+# Solve and make sure it can handle different directions of the 
+# parallel/counter flow heat exchanger
 
 #----------------------------------------------------------------------------------#
 # Output Formatted Text
