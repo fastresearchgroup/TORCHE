@@ -7,6 +7,7 @@ Purpose: Three-stream heat exchanger temperature distribution (1-D)
 # import modules
 
 import numpy as np
+from scipy.integrate import solve_bvp
 import matplotlib.pyplot as plt
 import pandas as pd
 from iapws import IAPWS95
@@ -138,6 +139,9 @@ D_3in = 16/100 # m - Inner Diameter (Tube 3)
 D_3out = 19/100 # m - Outer Diameter (Tube 3)
 L_HX = 200/100 # m - Length (HX)
 
+i_2 = -1 # Add stream definition
+i_3 = -1
+
 # Temperatures
 T_1in = 30 # Inlet Temperature (Stream 1) - C
 T_2in = 50 # Inlet Temperature (Stream 2) - C
@@ -244,20 +248,40 @@ theta_3in = (T_3in-T_1in)/(T_2in-T_1in)
 
 # See notes from Selic three stream heat exchanger design
 
+# Call Function to Solve
 def fun(x,y):
 	return np.vstack((NTU_1*(y[1]-y[0]),
 		i_2*NTU_1*Cs_12*(y[0]-y[1])+i_2*NTU_1*R_star*Cs_12*(y[2]-y[1]),
 		i_3*(Cs_12/Cs_32)*R_star*NTU_1*(y[1]-y[2])
 	))
 
-#call residuals
+#Call Boundary Conditions to use
+def bc(ya,yb):
+	if i_2 == 1:
+		res_2 = ya[1]-theta_3in # theta_3in might be the wrong one here.
+	elif i_2 == -1:
+		res_2 = yb[1]-theta_3in
+	if i_3 == 1:
+		res_3 = ya[2]
+	elif i_3 == -1:
+		res_3 = yb[2]
+	return np.array([ya[0]-1,res_2,res_3])
+
 # Solve and make sure it can handle different directions of the 
 # parallel/counter flow heat exchanger
-
+x = np.linspace(0,1,nodes)
+y = np.zeros((3,x.size))
+ 
 #Call bvp solver
+sol = solve_bvp(fun,bc,x,y,max_nodes = 1e6,verbose=2)
 
-# three unknown solver 
+Theta_1 = sol.sol(x)[0] # Stream 1
+Theta_2 = sol.sol(x)[1] # Stream 2
+Theta_3 = sol.sol(x)[2] # Stream 3
 
+print(Theta_1)
+print(Theta_2)
+print(Theta_3)
 
 #----------------------------------------------------------------------------------#
 # Output Formatted Text
@@ -277,3 +301,29 @@ print(HTC_3)
 
 #----------------------------------------------------------------------------------#
 # Output relevant plots
+
+h = 10
+w = 8
+
+lw = 2.5
+fs = 14
+
+k = 1
+plt.figure(k, figsize=(h,w))
+plt.plot(x,Theta_1,'r--',linewidth = lw,label=r'$\theta_{1}$')
+plt.plot(x,Theta_2,'k--',linewidth = lw,label=r'$\theta_{2}$')
+plt.plot(x,Theta_3,'b--',linewidth = lw,label=r'$\theta_{3}$')
+#plt.axhline(y=Tboil, xmin = 0, xmax = 1, color = 'r',linewidth = lw, label='Coolant Boiling Temp')
+#plt.axhline(y=TmeltCoolant, xmin = 0, xmax = 1, color = 'b',linewidth = lw, label='Coolant Melting Temp')
+plt.legend(loc='center left')
+plt.xlabel('Length - m',fontsize = fs)
+plt.ylabel('Theta - ',fontsize = fs)
+plt.grid()
+# fig = TCinput.Reactor_Title + '_Axial_Temperatures'
+# if print_logic == 0:
+#     plt.savefig(fig + '.png', dpi = 300, format = "png",bbox_inches="tight")
+#     plt.savefig(fig + '.eps', dpi = 300, format = "eps",bbox_inches="tight")
+#     plt.savefig(fig + '.svg', dpi = 300, format = "svg",bbox_inches="tight")
+k = k + 1
+
+plt.show()
