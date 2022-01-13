@@ -131,6 +131,8 @@ nodes = 100  # Number of nodes for 1-D calculation
 
 # Input Conditions
 # Geometry of Heat Exchanger
+arrangement = 'P4'
+
 D_1in = 10/100 # m - Inner Diameter (Tube 1)
 D_1out = 11/100 # m - Outer Diamter (Tube 1)
 D_2in = 13/100 # m - Inner Diamter (Tube 2)
@@ -138,9 +140,6 @@ D_2out = 14/100 # m - Outer Diamter (Tube 2)
 D_3in = 16/100 # m - Inner Diameter (Tube 3)
 D_3out = 19/100 # m - Outer Diameter (Tube 3)
 L_HX = 200/100 # m - Length (HX)
-
-i_2 = -1 # Add stream definition
-i_3 = -1
 
 # Temperatures
 T_1in = 30 # Inlet Temperature (Stream 1) - C
@@ -231,22 +230,54 @@ UA_12 = 1/(1/(HTC_2*A_2)+1/(2*np.pi*kw_12*L_HX)*np.log(D_1out/D_1in)+1/(HTC_1*A_
 UA_32 = 1/(1/(HTC_3*A_3)+1/(2*np.pi*kw_23*L_HX)*np.log(D_2out/D_2in)+1/(HTC_2*A_2))
 
 # Call NTU calculation
-NTU_1 = UA_12/C_1
+#NTU_1 = UA_12/C_1
+NTU_1 = 1.25 # Testing purposes only
 
 # Call Heat Capacity Stream Ratio Calculation
-Cs_12 = C_1/C_2 # Heat capacity ratio (1->2)
-Cs_32 = C_3/C_2 # Heat capacity ratio (3->2)
-
+#Cs_12 = C_1/C_2 # Heat capacity ratio (1->2)
+#Cs_32 = C_3/C_2 # Heat capacity ratio (3->2)
+Cs_12 = 0.8 # Testing purposes only
+Cs_32 = 0.25 # Testing purposes only
+ 
 # Call Conductance Ratio calculation
-R_star = UA_32/UA_12
+#R_star = UA_32/UA_12
+R_star = 2.0 # Testing purposes only
 
 # Call inlet temperature ratio (Dimensionless)
-theta_3in = (T_3in-T_1in)/(T_2in-T_1in) 
+#theta_3in = (T_3in-T_1in)/(T_2in-T_1in) 
+theta_3in = 0.0
+print('theta_3in',theta_3in)
+
+if arrangement == 'P1':
+	# Parallel, Parallel, Parallel
+	# (i1 = +1, i2 = +1, i3 = +1)
+	i_2 = 1 # Add stream definition
+	i_3 = 1 
+elif arrangement == 'P2':
+	# Parallel, Counter, Parallel
+	# (i1 = +1, i2 = -1, i3 = +1)
+	i_2 = -1 # Add stream definition
+	i_3 = 1 
+elif arrangement == 'P3':
+	# Parallel, Counter, Counter
+	# (i1 = +1, i2 = -1, i3 = -1)
+	i_2 = -1 # Add stream definition
+	i_3 = -1 
+elif arrangement == 'P4':
+	# Parallel, Counter, Counter
+	# (i1 = +1, i2 = +1, i3 = -1)
+	i_2 = 1 # Add stream definition
+	i_3 = -1 
 
 #----------------------------------------------------------------------------------#
 # Boundary Value Problem Calculation
 
-# See notes from Selic three stream heat exchanger design
+'''
+See notes from Selic three stream heat exchanger design
+Check out Cabezas-Gomez 2007 - Thermal Performance of Multipass Parallel and 
+Counter-Cross-Flow Heat Exchangers.pdf for example problems to debug.
+'''
+
 
 # Call Function to Solve
 def fun(x,y):
@@ -258,14 +289,14 @@ def fun(x,y):
 #Call Boundary Conditions to use
 def bc(ya,yb):
 	if i_2 == 1:
-		res_2 = ya[1]-theta_3in # theta_3in might be the wrong one here.
+		res_2 = ya[1]-1
 	elif i_2 == -1:
-		res_2 = yb[1]-theta_3in
+		res_2 = yb[1]-1
 	if i_3 == 1:
-		res_3 = ya[2]
+		res_3 = ya[2]-theta_3in
 	elif i_3 == -1:
-		res_3 = yb[2]
-	return np.array([ya[0]-1,res_2,res_3])
+		res_3 = yb[2]-theta_3in
+	return np.array([ya[0],res_2,res_3])
 
 # Solve and make sure it can handle different directions of the 
 # parallel/counter flow heat exchanger
