@@ -131,7 +131,7 @@ nodes = 100  # Number of nodes for 1-D calculation
 
 # Input Conditions
 # Geometry of Heat Exchanger
-arrangement = 'P4'
+arrangement = 'P1'
 
 D_1in = 10/100 # m - Inner Diameter (Tube 1)
 D_1out = 11/100 # m - Outer Diamter (Tube 1)
@@ -231,6 +231,7 @@ UA_32 = 1/(1/(HTC_3*A_3)+1/(2*np.pi*kw_23*L_HX)*np.log(D_2out/D_2in)+1/(HTC_2*A_
 
 # Call NTU calculation
 #NTU_1 = UA_12/C_1
+print("NTU_1 test is",UA_12/C_1)
 NTU_1 = 1.25 # Testing purposes only
 
 # Call Heat Capacity Stream Ratio Calculation
@@ -245,8 +246,12 @@ R_star = 2.0 # Testing purposes only
 
 # Call inlet temperature ratio (Dimensionless)
 #theta_3in = (T_3in-T_1in)/(T_2in-T_1in) 
-theta_3in = 0.0
-print('theta_3in',theta_3in)
+#theta_3in = 0.75
+#print('theta_3in',theta_3in)
+print('theta_3in',(T_3in-T_1in)/(T_2in-T_1in))
+print('theta_2in',(T_2in-T_3in)/(T_1in-T_3in))
+theta_3in = (T_2in-T_3in)/(T_1in-T_3in)
+
 
 if arrangement == 'P1':
 	# Parallel, Parallel, Parallel
@@ -288,6 +293,7 @@ def fun(x,y):
 
 #Call Boundary Conditions to use
 def bc(ya,yb):
+	res_1 = ya[0]
 	if i_2 == 1:
 		res_2 = ya[1]-1
 	elif i_2 == -1:
@@ -296,7 +302,7 @@ def bc(ya,yb):
 		res_3 = ya[2]-theta_3in
 	elif i_3 == -1:
 		res_3 = yb[2]-theta_3in
-	return np.array([ya[0],res_2,res_3])
+	return np.array([res_1,res_2,res_3])
 
 # Solve and make sure it can handle different directions of the 
 # parallel/counter flow heat exchanger
@@ -309,10 +315,6 @@ sol = solve_bvp(fun,bc,x,y,max_nodes = 1e6,verbose=2)
 Theta_1 = sol.sol(x)[0] # Stream 1
 Theta_2 = sol.sol(x)[1] # Stream 2
 Theta_3 = sol.sol(x)[2] # Stream 3
-
-print(Theta_1)
-print(Theta_2)
-print(Theta_3)
 
 #----------------------------------------------------------------------------------#
 # Output Formatted Text
