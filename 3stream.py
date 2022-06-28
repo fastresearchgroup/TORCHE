@@ -143,8 +143,8 @@ L_HX = 200/100 # m - Length (HX)
 
 # Temperatures
 T_1in = 30 # Inlet Temperature (Stream 1) - C
-T_2in = 50 # Inlet Temperature (Stream 2) - C
-T_3in = 80 # Inlet Temperature (Stream 3) - C
+T_2in = 80 #50 # Inlet Temperature (Stream 2) - C
+T_3in = 50 #80 # Inlet Temperature (Stream 3) - C
 # Pressures
 P_1in = 101325 # Inlet Pressure (Stream 1) - Pa
 P_2in = 101325 # Inlet Pressure (Stream 2) - Pa
@@ -230,27 +230,28 @@ UA_12 = 1/(1/(HTC_2*A_2)+1/(2*np.pi*kw_12*L_HX)*np.log(D_1out/D_1in)+1/(HTC_1*A_
 UA_32 = 1/(1/(HTC_3*A_3)+1/(2*np.pi*kw_23*L_HX)*np.log(D_2out/D_2in)+1/(HTC_2*A_2))
 
 # Call NTU calculation
-#NTU_1 = UA_12/C_1
+NTU_1 = UA_12/C_1
 print("NTU_1 test is",UA_12/C_1)
-NTU_1 = 1.25 # Testing purposes only
+#NTU_1 = 1.25 # Testing purposes only
 
 # Call Heat Capacity Stream Ratio Calculation
-#Cs_12 = C_1/C_2 # Heat capacity ratio (1->2)
-#Cs_32 = C_3/C_2 # Heat capacity ratio (3->2)
-Cs_12 = 0.8 # Testing purposes only
-Cs_32 = 0.25 # Testing purposes only
+Cs_12 = C_1/C_2 # Heat capacity ratio (1->2)
+Cs_32 = C_3/C_2 # Heat capacity ratio (3->2)
+print(Cs_12+Cs_32)
+#Cs_12 = 0.8 # Testing purposes only
+#Cs_32 = 0.25 # Testing purposes only
  
 # Call Conductance Ratio calculation
-#R_star = UA_32/UA_12
-R_star = 2.0 # Testing purposes only
+R_star = UA_32/UA_12
+#R_star = 2.0 # Testing purposes only
 
 # Call inlet temperature ratio (Dimensionless)
-#theta_3in = (T_3in-T_1in)/(T_2in-T_1in) 
+theta_3in = (T_3in-T_1in)/(T_2in-T_1in) 
 #theta_3in = 0.75
 #print('theta_3in',theta_3in)
 print('theta_3in',(T_3in-T_1in)/(T_2in-T_1in))
 print('theta_2in',(T_2in-T_3in)/(T_1in-T_3in))
-theta_3in = (T_2in-T_3in)/(T_1in-T_3in)
+#theta_2in = (T_2in-T_3in)/(T_1in-T_3in)
 
 
 if arrangement == 'P1':
@@ -302,7 +303,21 @@ def bc(ya,yb):
 		res_3 = ya[2]-theta_3in
 	elif i_3 == -1:
 		res_3 = yb[2]-theta_3in
+
 	return np.array([res_1,res_2,res_3])
+
+# def bc(ya,yb):
+# 	res_1 = ya[0] - 1
+# 	if i_2 == 1:
+# 		res_2 = ya[1]-theta_2in
+# 	elif i_2 == -1:
+# 		res_2 = yb[1]-theta_2in
+# 	if i_3 == 1:
+# 		res_3 = ya[2]
+# 	elif i_3 == -1:
+# 		res_3 = yb[2]
+
+# 	return np.array([res_1,res_2,res_3])
 
 # Solve and make sure it can handle different directions of the 
 # parallel/counter flow heat exchanger
@@ -315,6 +330,10 @@ sol = solve_bvp(fun,bc,x,y,max_nodes = 1e6,verbose=2)
 Theta_1 = sol.sol(x)[0] # Stream 1
 Theta_2 = sol.sol(x)[1] # Stream 2
 Theta_3 = sol.sol(x)[2] # Stream 3
+
+T_1 = Theta_1*(T_2in-T_1in) + T_1in
+T_2 = Theta_2*(T_2in-T_1in) + T_1in
+T_3 = Theta_3*(T_2in-T_1in) + T_1in
 
 #----------------------------------------------------------------------------------#
 # Output Formatted Text
@@ -343,9 +362,26 @@ fs = 14
 
 k = 1
 plt.figure(k, figsize=(h,w))
-plt.plot(x,Theta_1,'r--',linewidth = lw,label=r'$\theta_{1}$')
-plt.plot(x,Theta_2,'k--',linewidth = lw,label=r'$\theta_{2}$')
-plt.plot(x,Theta_3,'b--',linewidth = lw,label=r'$\theta_{3}$')
+plt.plot(x*L_HX,Theta_1,'r--',linewidth = lw,label=r'$\theta_{1}$')
+plt.plot(x*L_HX,Theta_2,'k--',linewidth = lw,label=r'$\theta_{2}$')
+plt.plot(x*L_HX,Theta_3,'b--',linewidth = lw,label=r'$\theta_{3}$')
+#plt.axhline(y=Tboil, xmin = 0, xmax = 1, color = 'r',linewidth = lw, label='Coolant Boiling Temp')
+#plt.axhline(y=TmeltCoolant, xmin = 0, xmax = 1, color = 'b',linewidth = lw, label='Coolant Melting Temp')
+plt.legend(loc='center left')
+plt.xlabel('Length - m',fontsize = fs)
+plt.ylabel('Theta - ',fontsize = fs)
+plt.grid()
+# fig = TCinput.Reactor_Title + '_Axial_Temperatures'
+# if print_logic == 0:
+#     plt.savefig(fig + '.png', dpi = 300, format = "png",bbox_inches="tight")
+#     plt.savefig(fig + '.eps', dpi = 300, format = "eps",bbox_inches="tight")
+#     plt.savefig(fig + '.svg', dpi = 300, format = "svg",bbox_inches="tight")
+k = k + 1
+
+plt.figure(k, figsize=(h,w))
+plt.plot(x*L_HX,T_1,'r--',linewidth = lw,label=r'$T_{1}$')
+plt.plot(x*L_HX,T_2,'k--',linewidth = lw,label=r'$T_{2}$')
+plt.plot(x*L_HX,T_3,'b--',linewidth = lw,label=r'$T_{3}$')
 #plt.axhline(y=Tboil, xmin = 0, xmax = 1, color = 'r',linewidth = lw, label='Coolant Boiling Temp')
 #plt.axhline(y=TmeltCoolant, xmin = 0, xmax = 1, color = 'b',linewidth = lw, label='Coolant Melting Temp')
 plt.legend(loc='center left')
